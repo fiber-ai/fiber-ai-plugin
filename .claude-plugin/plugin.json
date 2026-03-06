@@ -1,0 +1,24 @@
+{
+  "name": "fiber",
+  "version": "1.0.0",
+  "description": "Search companies, find contacts, enrich data, and manage audiences using Fiber AI APIs. Provides MCP tools and skills for B2B data workflows.",
+  "author": {
+    "name": "Fiber AI",
+    "email": "support@fiber.ai"
+  },
+  "homepage": "https://fiber.ai",
+  "repository": "https://github.com/fiber-ai/fiber-ai-plugin",
+  "license": "MIT",
+  "keywords": [
+    "fiber",
+    "b2b",
+    "leads",
+    "enrichment",
+    "mcp",
+    "sales",
+    "contacts",
+    "company-search"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

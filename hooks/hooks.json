@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Check if the environment variable FIBER_API_KEY is set. If it is NOT set, briefly inform the user: 'Fiber AI plugin is active. Set your FIBER_API_KEY environment variable to authenticate, or run /fiber:setup for guided configuration.' Keep the message to one line. Do not block the session.",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

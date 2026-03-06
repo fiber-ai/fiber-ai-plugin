@@ -1,0 +1,39 @@
+# Fiber AI API Rules
+
+## Authentication
+
+- Always use the `FIBER_API_KEY` environment variable for API authentication
+- Never hardcode API keys in source code
+- API key is available at https://fiber.ai/app/api
+
+## Credit Awareness
+
+- Check credit balance before expensive operations (enrichment, audience building)
+- Always show cost estimates to the user before proceeding with credit-charging operations
+- Individual reveals cost credits per contact
+- Audience builds cost 1 credit per entity found
+- Credit balance and top-up available at https://www.fiber.ai/app/subscription
+
+## Data Handling
+
+- Treat all contact data (emails, phones) as sensitive PII
+- Never log or print API keys or full contact details in production code
+- Use environment variables for all configuration values
+
+## Workflow Best Practices
+
+- For bulk operations (more than 5 contacts): use the Audience workflow, not individual reveals
+- Audience workflow order: Create, Set Params, Build, Estimate Cost, Enrich, Export
+- Always confirm with the user before any credit-charging operation
+- Never skip the cost estimate step in audience workflows
+
+## MCP Servers
+
+- V2 (direct tools for common operations): `https://mcp.fiber.ai/mcp/v2`
+- Core (meta-tools for all 100+ endpoints): `https://mcp.fiber.ai/mcp`
+- Transport type: HTTP (Streamable HTTP)
+
+## SDKs
+
+- TypeScript: `npm install @fiberai/sdk`
+- Python: `pip install fiberai`

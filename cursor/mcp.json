@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "fiber-ai-v2": {
+      "type": "http",
+      "url": "https://mcp.fiber.ai/mcp/v2"
+    },
+    "fiber-ai-core": {
+      "type": "http",
+      "url": "https://mcp.fiber.ai/mcp"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "fiber-tools",
+  "description": "Official Fiber AI tools for AI coding agents",
+  "owner": {
+    "name": "Fiber AI",
+    "email": "support@fiber.ai",
+    "url": "https://fiber.ai"
+  },
+  "plugins": [
+    {
+      "name": "fiber",
+      "description": "B2B data enrichment — search companies, find contacts, enrich data, manage audiences",
+      "version": "1.0.0",
+      "source": "./",
+      "category": "data",
+      "homepage": "https://fiber.ai",
+      "tags": [
+        "b2b",
+        "leads",
+        "enrichment",
+        "contacts",
+        "sales",
+        "mcp"
+      ]
+    }
+  ]
+}
