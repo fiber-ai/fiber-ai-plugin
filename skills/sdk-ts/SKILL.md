@@ -41,7 +41,7 @@ const result = await companySearch({
 
 ## Key Concepts
 
-- The SDK is auto-generated from the OpenAPI spec using `@hey-api/openapi-ts`
+- The SDK provides typed functions for every API endpoint
 - Each API operationId becomes a **named exported function** (e.g., `companySearch`, `peopleSearch`, `syncContactEnrichment`)
 - `apiKey` is passed **in the request body** (for POST) or **query string** (for GET), not as a header
 - Search filters go inside a `searchParams` object, not a `filters` object

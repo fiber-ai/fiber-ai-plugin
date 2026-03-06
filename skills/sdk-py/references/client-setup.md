@@ -39,7 +39,7 @@ Each module exports 4 function variants:
 
 ## Request Bodies
 
-Bodies are `attrs` classes. Import from `fiberai.models.{model_name}`:
+Bodies are typed model classes. Import from `fiberai.models.{model_name}`:
 
 ```python
 from fiberai.models.company_search_body import CompanySearchBody

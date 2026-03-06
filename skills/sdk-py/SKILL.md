@@ -42,10 +42,10 @@ result = company_search_sync(
 
 ## Key Concepts
 
-- The SDK is auto-generated from the OpenAPI spec using `openapi-python-client`
+- The SDK provides typed functions for every API endpoint
 - API functions are **standalone module functions**, not methods on the client — import them from `fiberai.api.{domain}.{operation}`
 - Each module exports 4 variants: `sync`, `sync_detailed`, `asyncio`, `asyncio_detailed`
-- Request bodies are **`attrs` classes** (not Pydantic, not raw dicts) — import from `fiberai.models.{model_name}`
+- Request bodies are **typed model classes** (not raw dicts) — import from `fiberai.models.{model_name}`
 - `api_key` is a field on every body model (for POST) or query parameter (for GET) — not a header
 - Search filters go inside `search_params` (not `filters`)
 - Pagination uses `cursor` (not `page`)
@@ -79,8 +79,8 @@ There is no separate `AsyncClient` class. Use the `asyncio` or `asyncio_detailed
 
 - Always use environment variables for API keys — never hardcode secrets
 - `api_key` goes in the body model (POST) or query params (GET), not as a header
-- Body parameters must be constructed as typed `attrs` model instances, not raw dicts
-- The SDK uses `httpx` under the hood — the `Client` supports both sync and async via context managers
+- Body parameters must be constructed as typed model instances, not raw dicts
+- The `Client` supports both sync and async via context managers
 - Error responses are typed unions — check the response type or use `raise_on_unexpected_status=True` on the `Client` for automatic error raising (raises `errors.UnexpectedStatus`)
 - Check https://api.fiber.ai/docs/ for current API schemas — parameters and response shapes may change between versions
 

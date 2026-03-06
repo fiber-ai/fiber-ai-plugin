@@ -143,7 +143,7 @@ async def enrich_batch(linkedin_urls: list[str], delay: float = 0.2):
 ## Important Notes
 
 - API functions are standalone imports from `fiberai.api.{domain}.{operation}`, not client methods
-- Bodies are `attrs` classes from `fiberai.models.{model_name}` — not raw dicts
+- Bodies are typed model classes from `fiberai.models.{model_name}` — not raw dicts
 - `api_key` is a field on every body model (POST) or keyword argument (GET)
 - There is no `AsyncClient` — use `asyncio` function variants with the regular `Client`
 - Python model fields use `snake_case` (e.g., `linkedin_url`, `api_key`, `search_params`, `page_size`)

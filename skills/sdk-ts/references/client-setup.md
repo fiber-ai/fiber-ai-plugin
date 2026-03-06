@@ -100,4 +100,4 @@ try {
 
 For the full list of available operations, parameter schemas, and response types, see:
 - Interactive API docs: https://api.fiber.ai/docs/
-- SDK source (auto-generated): check `node_modules/@fiberai/sdk/dist/` after installation
+- SDK source: check `node_modules/@fiberai/sdk/dist/` after installation for available operations and types
