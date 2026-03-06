@@ -17,15 +17,26 @@ This installs MCP tools, skills, and hooks automatically. Run `/fiber:help` to s
 
 **Option A — Deeplink (recommended):**
 
-[Install Fiber AI MCP in Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=fiber-ai-v2&config=eyJ0eXBlIjoiaHR0cCIsInVybCI6Imh0dHBzOi8vbWNwLmZpYmVyLmFpL21jcC92MiJ9)
+Copy and paste this URL into your browser to auto-add the V2 MCP server:
+
+```
+cursor://anysphere.cursor-deeplink/mcp/install?name=fiber-ai-v2&config=eyJ0eXBlIjoiaHR0cCIsInVybCI6Imh0dHBzOi8vbWNwLmZpYmVyLmFpL21jcC92MiJ9
+```
+
+For the Core MCP server (all 100+ endpoints via meta-tools):
+
+```
+cursor://anysphere.cursor-deeplink/mcp/install?name=fiber-ai-core&config=eyJ0eXBlIjoiaHR0cCIsInVybCI6Imh0dHBzOi8vbWNwLmZpYmVyLmFpL21jcCJ9
+```
 
 **Option B — Manual:**
 
 Copy `cursor/mcp.json` to your project's `.cursor/mcp.json`, or add to Cursor Settings > Features > MCP:
 
-- **Name**: `fiber-ai-v2`
-- **Type**: `HTTP`
-- **URL**: `https://mcp.fiber.ai/mcp/v2`
+| Name | Type | URL | Best For |
+|------|------|-----|----------|
+| `fiber-ai-v2` | `HTTP` | `https://mcp.fiber.ai/mcp/v2` | ~10 direct tools for common operations |
+| `fiber-ai-core` | `HTTP` | `https://mcp.fiber.ai/mcp` | 4 meta-tools accessing all 100+ endpoints |
 
 **Optional — Add agent rules:**
 
@@ -41,6 +52,10 @@ Copy `vscode/mcp.json` to your project's `.vscode/mcp.json`, or add to your VS C
     "fiber-ai-v2": {
       "type": "http",
       "url": "https://mcp.fiber.ai/mcp/v2"
+    },
+    "fiber-ai-core": {
+      "type": "http",
+      "url": "https://mcp.fiber.ai/mcp"
     }
   }
 }
@@ -48,10 +63,10 @@ Copy `vscode/mcp.json` to your project's `.vscode/mcp.json`, or add to your VS C
 
 ### Windsurf
 
-Add the MCP server URL in Windsurf settings:
+Add MCP servers in Windsurf settings (Transport: HTTP):
 
-- **URL**: `https://mcp.fiber.ai/mcp/v2`
-- **Transport**: HTTP
+- **V2**: `https://mcp.fiber.ai/mcp/v2` — direct tools for common operations
+- **Core**: `https://mcp.fiber.ai/mcp` — meta-tools for all 100+ endpoints
 
 Copy `windsurf/rules/fiber-api.md` to your project's Windsurf rules directory for agent guidance.
 
@@ -81,6 +96,10 @@ Commit an MCP config to your repository so teammates get Fiber AI automatically:
     "fiber-ai-v2": {
       "type": "http",
       "url": "https://mcp.fiber.ai/mcp/v2"
+    },
+    "fiber-ai-core": {
+      "type": "http",
+      "url": "https://mcp.fiber.ai/mcp"
     }
   }
 }
