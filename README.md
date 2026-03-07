@@ -4,20 +4,25 @@ Use Fiber AI with your AI coding agent. Search companies, find contacts, enrich 
 
 ## Quick Start
 
-### Claude Code (Full Plugin)
+### Claude Code
 
 ```bash
-/plugin marketplace add fiber-ai/fiber-ai-plugin
-/plugin install fiber@fiber-tools
+claude plugin marketplace add fiber-ai/fiber-ai-plugin --scope project
+claude plugin install fiber --scope project
 ```
 
 This installs MCP tools, skills, and hooks automatically. Run `/fiber:help` to see available commands.
 
 ### Cursor
 
-**Option A — Deeplink (recommended):**
+```bash
+cursor-plugin marketplace add fiber-ai/fiber-ai-plugin --scope project
+cursor-plugin install fiber-ai --scope project
+```
 
-Copy and paste this URL into your browser to auto-add the V2 MCP server:
+This installs MCP servers, skills, rules, and slash commands (`/fiber-search`, `/fiber-enrich`, `/fiber-audience`, `/fiber-setup`).
+
+**Or add MCP only via deeplink** — copy and paste into your browser:
 
 ```
 cursor://anysphere.cursor-deeplink/mcp/install?name=fiber-ai-v2&config=eyJ0eXBlIjoiaHR0cCIsInVybCI6Imh0dHBzOi8vbWNwLmZpYmVyLmFpL21jcC92MiJ9
@@ -33,10 +38,10 @@ cursor://anysphere.cursor-deeplink/mcp/install?name=fiber-ai-core&config=eyJ0eXB
 
 Copy `cursor/mcp.json` to your project's `.cursor/mcp.json`, or add to Cursor Settings > Features > MCP:
 
-| Name | Type | URL | Best For |
-|------|------|-----|----------|
-| `fiber-ai-v2` | `HTTP` | `https://mcp.fiber.ai/mcp/v2` | ~10 direct tools for common operations |
-| `fiber-ai-core` | `HTTP` | `https://mcp.fiber.ai/mcp` | 4 meta-tools accessing all 100+ endpoints |
+| Name            | Type   | URL                           | Best For                                  |
+| --------------- | ------ | ----------------------------- | ----------------------------------------- |
+| `fiber-ai-v2`   | `HTTP` | `https://mcp.fiber.ai/mcp/v2` | ~10 direct tools for common operations    |
+| `fiber-ai-core` | `HTTP` | `https://mcp.fiber.ai/mcp`    | 4 meta-tools accessing all 100+ endpoints |
 
 **Optional — Add agent rules:**
 
@@ -44,7 +49,7 @@ Copy `cursor/rules/fiber-api.mdc` to your project's `.cursor/rules/` directory.
 
 ### VS Code
 
-Copy `vscode/mcp.json` to your project's `.vscode/mcp.json`, or add to your VS Code settings:
+Add to your `.vscode/mcp.json`:
 
 ```json
 {
@@ -122,28 +127,28 @@ Add to your shell profile (`~/.zshrc` or `~/.bashrc`) for persistence.
 
 ---
 
-## Available Skills
+## Available Commands
 
-| Skill | Command | Description |
-|-------|---------|-------------|
-| **search** | `/fiber:search "query"` | Search for companies or people by criteria |
-| **enrich** | `/fiber:enrich "target"` | Reveal emails, phones, and profiles for contacts or companies |
-| **audience** | `/fiber:audience "description"` | Build prospecting lists with bulk search, enrichment, and export |
-| **sdk-ts** | `/fiber:sdk-ts "what to build"` | Help writing TypeScript code with `@fiberai/sdk` |
-| **sdk-py** | `/fiber:sdk-py "what to build"` | Help writing Python code with `fiberai` |
-| **setup** | `/fiber:setup` | Configure API key and verify MCP connection |
-| **help** | `/fiber:help` | Show capabilities and available commands |
+| Command                         | Description                                                      |
+| ------------------------------- | ---------------------------------------------------------------- |
+| `/fiber:search "query"`         | Search for companies or people by criteria                       |
+| `/fiber:enrich "target"`        | Reveal emails, phones, and profiles for contacts or companies    |
+| `/fiber:audience "description"` | Build prospecting lists with bulk search, enrichment, and export |
+| `/fiber:sdk-ts "what to build"` | Help writing TypeScript code with `@fiberai/sdk`                 |
+| `/fiber:sdk-py "what to build"` | Help writing Python code with `fiberai`                          |
+| `/fiber:setup`                  | Configure API key and verify MCP connection                      |
+| `/fiber:help`                   | Show capabilities and available commands                         |
 
 ---
 
 ## MCP Servers
 
-Fiber AI provides two MCP endpoints with different trade-offs:
+Fiber AI provides two MCP endpoints:
 
-| Endpoint | URL | Tools | Best For |
-|----------|-----|-------|----------|
-| **V2** | `https://mcp.fiber.ai/mcp/v2` | ~10 curated, direct API tools | Most users — common operations like search, enrich, audience management |
-| **Core** | `https://mcp.fiber.ai/mcp` | 4 meta-tools (search, list, details, call) | Power users who need access to all 100+ API endpoints |
+| Endpoint | URL                           | Tools                                      | Best For                                         |
+| -------- | ----------------------------- | ------------------------------------------ | ------------------------------------------------ |
+| **V2**   | `https://mcp.fiber.ai/mcp/v2` | ~10 curated, direct API tools              | Most users — search, enrich, audience management |
+| **Core** | `https://mcp.fiber.ai/mcp`    | 4 meta-tools (search, list, details, call) | Power users — access to all 100+ API endpoints   |
 
 Both use **HTTP (Streamable HTTP)** transport.
 
@@ -158,41 +163,11 @@ For building applications programmatically:
 
 ---
 
-## Project Structure
-
-```
-fiber-ai-plugin/
-├── .claude-plugin/          # Claude Code plugin manifests
-│   ├── plugin.json
-│   └── marketplace.json
-├── .mcp.json                # MCP server configuration
-├── hooks/
-│   └── hooks.json           # Claude Code lifecycle hooks
-├── skills/                  # Skills (Claude Code + skills.sh)
-│   ├── search/              # Company and people search
-│   ├── enrich/              # Contact and company enrichment
-│   ├── audience/            # Bulk audience workflows
-│   ├── setup/               # Environment configuration
-│   ├── help/                # Capabilities overview
-│   ├── sdk-ts/              # TypeScript SDK guidance + references
-│   └── sdk-py/              # Python SDK guidance + references
-├── cursor/                  # Cursor-specific configs
-│   ├── mcp.json
-│   └── rules/fiber-api.mdc
-├── vscode/                  # VS Code config template
-│   └── mcp.json
-├── windsurf/                # Windsurf config template
-│   └── rules/fiber-api.md
-├── LICENSE
-└── README.md
-```
-
----
-
 ## Links
 
 - [Fiber AI](https://fiber.ai)
-- [API Documentation](https://docs.fiber.ai)
+- [Fiber Documentation](https://docs.fiber.ai)
+- [API Documentation](https://api.fiber.ai/docs/)
 - [API Key Management](https://fiber.ai/app/api)
 - [Credits and Billing](https://www.fiber.ai/app/subscription)
 
