@@ -19,6 +19,7 @@
     "contacts",
     "company-search"
   ],
+  "logo": "assets/logo.png",
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "hooks": "./hooks/hooks.json"

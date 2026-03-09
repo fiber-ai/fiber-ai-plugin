@@ -10,6 +10,7 @@
   "repository": "https://github.com/fiber-ai/fiber-ai-plugin",
   "license": "MIT",
   "keywords": ["fiber", "b2b", "leads", "enrichment", "mcp", "sales", "contacts"],
+  "logo": "assets/logo.png",
   "skills": "./skills/",
   "rules": "./cursor/rules/",
   "commands": "./cursor/commands/",
