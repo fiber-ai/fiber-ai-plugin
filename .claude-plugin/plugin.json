@@ -21,6 +21,7 @@
   ],
   "logo": "assets/logo.png",
   "skills": "./skills/",
+  "agents": "./agents/",
   "mcpServers": "./.mcp.json",
   "hooks": "./hooks/hooks.json"
 }

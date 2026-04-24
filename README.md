@@ -16,7 +16,7 @@ All three use **Streamable HTTP** transport. You can register any combination; t
 
 ## Install
 
-All install paths give you the MCP servers plus 13 built-in skills (7 general + 6 playbook workflows).
+All install paths give you the MCP servers, 15 built-in skills (7 general + 8 playbook workflows), and 5 persona subagents (`ai-recruiter`, `ai-sdr`, `gtm-strategist`, `signal-scout`, `data-quality-auditor`) that do the work like a human teammate with full Fiber product knowledge.
 
 ### Claude Code
 
@@ -63,6 +63,12 @@ cursor://anysphere.cursor-deeplink/mcp/install?name=fiber-ai-core&config=eyJ0eXB
 
 **Option B — Manual:** copy `cursor/mcp.json` from this repo to your project's `.cursor/mcp.json`. Optionally copy `cursor/rules/fiber-api.mdc` to `.cursor/rules/` for inline agent guidance.
 
+**Persona subagents:** Cursor picks up subagents from `.cursor/agents/`. Copy the persona files into your project:
+
+```bash
+mkdir -p .cursor/agents && cp path/to/fiber-ai-plugin/cursor/agents/*.md .cursor/agents/
+```
+
 ### OpenCode
 
 In your OpenCode session, tell the agent:
@@ -71,7 +77,7 @@ In your OpenCode session, tell the agent:
 Fetch and follow instructions from https://raw.githubusercontent.com/fiber-ai/fiber-ai-plugin/main/.opencode/INSTALL.md
 ```
 
-The agent will register the Fiber MCP servers (V2, V3, Core), clone the skills, and append a "Fiber AI skills" section to your project `AGENTS.md`.
+The agent will register the Fiber MCP servers (V2, V3, Core), clone the skills, copy the persona subagents into `.opencode/agents/`, and append a "Fiber AI skills and personas" section to your project `AGENTS.md`.
 
 ### Gemini CLI
 
@@ -112,6 +118,14 @@ export FIBER_API_KEY=sk_live_...
 ```
 
 To load the playbook skills, clone this repo next to your project and reference it in your Codex system prompt, or copy individual `skills/*/SKILL.md` files into your Codex skills directory.
+
+**Persona subagents for Codex CLI:** the plugin ships TOML-format subagents under `.codex/agents/`. Copy them into your Codex agents directory:
+
+```bash
+mkdir -p .codex/agents && cp path/to/fiber-ai-plugin/.codex/agents/*.toml .codex/agents/
+```
+
+Then invoke any of `@ai-recruiter`, `@ai-sdr`, `@gtm-strategist`, `@signal-scout`, or `@data-quality-auditor` inside Codex.
 
 ### GitHub Copilot CLI
 
@@ -166,6 +180,8 @@ npx skills add fiber-ai/fiber-ai-plugin --skill build-recruiting-audience
 npx skills add fiber-ai/fiber-ai-plugin --skill expand-from-email-list
 npx skills add fiber-ai/fiber-ai-plugin --skill enrich-github-handles
 npx skills add fiber-ai/fiber-ai-plugin --skill find-and-enrich-by-role
+npx skills add fiber-ai/fiber-ai-plugin --skill track-signals
+npx skills add fiber-ai/fiber-ai-plugin --skill benchmark-vs-competitor
 npx skills add fiber-ai/fiber-ai-plugin --skill search
 npx skills add fiber-ai/fiber-ai-plugin --skill enrich
 npx skills add fiber-ai/fiber-ai-plugin --skill audience
@@ -194,18 +210,38 @@ The MCP servers read your key from the client's request headers. Nothing is stor
 
 ## What you get
 
-Fiber ships 13 skills. Each has a slash command (so the user can invoke it directly) and an auto-trigger description (so agents load it automatically on matching intent).
+Fiber ships 5 persona subagents + 15 skills. Personas are the "hire an AI teammate" unit - they carry domain expertise (recruiting, sales, GTM, signal tracking, data QA) plus full Fiber product knowledge so the user does not have to teach their LLM about either. Skills are the underlying workflow primitives the personas call into.
+
+### Persona subagents (auto-load on matching intent, or invoke via `@<name>`)
+
+| Persona                  | Who it is                                                                     | Trigger phrases                                                                                                                                           |
+| ------------------------ | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@ai-recruiter`          | Senior in-house / agency recruiter; 10+ years sourcing engineers and GTM      | "build a recruiting list", "source engineers", "find candidates for <role>", "I am hiring a <role>", "JD attached", "talent audience", "passive candidates" |
+| `@ai-sdr`                | Senior SDR / AE; runs outbound for B2B SaaS scale-ups                         | "build outbound list", "target accounts", "accounts like <seed>", "who should I reach at <company>", "find the buyer", "SDR list", "prospect list"        |
+| `@gtm-strategist`        | Head of Sales / Head of GTM; thinks in pipeline math before running anything  | "GTM plan", "ABM strategy", "grow from $X to $Y", "pipeline math", "scope this campaign", "territory planning", "how many accounts do I need"             |
+| `@signal-scout`          | Intent-signal operator; turns a static list into a live feed of buying events | "track signals", "watch these accounts", "job-change alerts", "who is hiring at my targets", "recent funding at my accounts", "signal-driven outbound"    |
+| `@data-quality-auditor`  | Rigorous, vendor-agnostic data-quality analyst; runs reproducible bake-offs   | "compare Fiber to <vendor>", "bake-off", "benchmark data quality", "evaluate Fiber AI", "should I switch from <vendor>", "which provider is better for my segment" |
+
+Each persona:
+
+- Comes preloaded with domain expertise (recruiter tradeoffs vs SDR tradeoffs vs GTM strategy vs signal noise filtering vs benchmarking rigor).
+- Knows every relevant Fiber operationId by name (no meta-tool round-trips for common operations).
+- Calls into the plugin's skills automatically rather than hand-rolling HTTP calls.
+- Enforces the same cost / consent gates as the skills - never charges silently.
+- `@data-quality-auditor` never recommends a vendor - it presents numbers (including where Fiber underperformed) and lets the user decide.
 
 ### Playbook skills (auto-trigger on buyer / recruiter intent)
 
-| Skill                              | Trigger phrases                                                           |
-| ---------------------------------- | ------------------------------------------------------------------------- |
-| `/fiber:find-similar-companies`    | "find companies like <seed>", "competitors of <seed>", "ABM lookalikes"   |
-| `/fiber:enrich-linkedin-csv`       | "enrich these LinkedIn URLs", "bulk reveal emails for this list"          |
-| `/fiber:build-recruiting-audience` | "build a recruiting list", "sourcing list for VP Eng at fintech"          |
-| `/fiber:expand-from-email-list`    | "I have emails — give me LinkedIn + company", "reverse lookup emails"     |
-| `/fiber:enrich-github-handles`     | "enrich these GitHub users", "find LinkedIn for these contributors"       |
-| `/fiber:find-and-enrich-by-role`   | "find VPs of Engineering at Series B SaaS", "CMOs in healthcare"          |
+| Skill                              | Trigger phrases                                                                 |
+| ---------------------------------- | ------------------------------------------------------------------------------- |
+| `/fiber:find-similar-companies`    | "find companies like <seed>", "competitors of <seed>", "ABM lookalikes"         |
+| `/fiber:enrich-linkedin-csv`       | "enrich these LinkedIn URLs", "bulk reveal emails for this list"                |
+| `/fiber:build-recruiting-audience` | "build a recruiting list", "sourcing list for VP Eng at fintech"                |
+| `/fiber:expand-from-email-list`    | "I have emails - give me LinkedIn + company", "reverse lookup emails"           |
+| `/fiber:enrich-github-handles`     | "enrich these GitHub users", "find LinkedIn for these contributors"             |
+| `/fiber:find-and-enrich-by-role`   | "find VPs of Engineering at Series B SaaS", "CMOs in healthcare"                |
+| `/fiber:track-signals`             | "job-change alerts", "hiring signals for these companies", "intent data feed"   |
+| `/fiber:benchmark-vs-competitor`   | "compare Fiber to <vendor>", "bake-off", "benchmark data quality on my sample"  |
 
 ### General skills
 

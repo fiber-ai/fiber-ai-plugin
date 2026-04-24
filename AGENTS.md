@@ -5,11 +5,15 @@ This repository ships Fiber AI as a first-class plugin for AI coding agents (Cla
 ## What this repo contains
 
 - `skills/` — per-workflow skills (Markdown). Each skill has a `SKILL.md` with YAML frontmatter (`name`, `description`, `user-invocable`, `argument-hint`). The `description` is what other agents match against to auto-load the skill, so it must contain realistic user trigger phrases.
+- `agents/` — persona subagent files (Claude Code / Cursor / OpenCode compatible). Flat `.md` files; each is a full subagent system prompt with YAML frontmatter. See "Persona authoring rules" below. Current personas: `ai-recruiter`, `ai-sdr`, `gtm-strategist`, `signal-scout`, `data-quality-auditor`.
+- `cursor/agents/` — Cursor-compatible copies of the persona files (plain `cp` from `agents/`).
+- `.opencode/agents/` — OpenCode-compatible copies of the persona files (`cp` + frontmatter swap: `name`/`tools`/`skills`/`mcpServers`/`color` removed, `mode: subagent` added).
+- `.codex/agents/` — Codex CLI TOML translations of the persona files. Generated from `agents/*.md` via a small bash script; the developer instructions body is copied verbatim, not re-authored.
 - `.mcp.json`, `cursor/mcp.json`, `vscode/mcp.json`, `gemini-extension.json` — MCP server configuration for each supported environment. All three Fiber MCP endpoints should appear in every config:
   - `https://mcp.fiber.ai/mcp/v2` — direct tools for the top ~10 priority operations, API-key auth.
   - `https://mcp.fiber.ai/mcp/v3` — direct tools for every public operation with compact descriptions, OAuth (SSO) auth.
   - `https://mcp.fiber.ai/mcp` — 5 meta-tools (`search_endpoints`, `list_tag_packs`, `list_all_endpoints`, `get_endpoint_details_full`, `call_operation`) over every public operation, supports both API-key and OAuth.
-- `.claude-plugin/`, `.cursor-plugin/` — manifest files for the Claude Code and Cursor plugin formats.
+- `.claude-plugin/`, `.cursor-plugin/` — manifest files for the Claude Code and Cursor plugin formats. Both register `agents/` alongside `skills/`.
 - `cursor/rules/`, `windsurf/rules/` — rule files surfaced to the agent inside those IDEs.
 - `hooks/` — Claude Code lifecycle hooks.
 - `.opencode/INSTALL.md` — fetch-and-follow install instructions for OpenCode.
@@ -33,12 +37,50 @@ When a skill references an operation, link to `https://api.fiber.ai/ai-docs/<ope
 - **Cost-charging operations** (`buildAudience`, `triggerEnrichment`, `syncQuickContactReveal`, `syncTurboContactEnrichment`, `triggerExhaustiveContactEnrichment`, `startBatchContactDetails`, `profileLiveEnrich`, `companyLiveEnrich`) must have an explicit confirmation gate in the happy path. Never charge silently.
 - **Section order** in every SKILL.md: frontmatter → H1 + mission → `## When to use` → `## Do not use when` → `## Happy path` → `## Cost & consent gates` → `## Error handling` → `## For AI agents: machine-readable docs` → optional `## SDK usage`.
 
+## Persona authoring rules
+
+Personas live in `agents/<name>.md` (canonical source). A persona is a domain-expert subagent that the user can invoke with `@<name>` and that carries full Fiber product knowledge plus operator-grade domain expertise.
+
+- **Canonical source is `agents/<name>.md`.** Cursor and OpenCode copies are `cp`-derived; Codex TOML is script-derived. Never edit a derived copy directly - edit `agents/<name>.md` and re-run the distribution steps (see below).
+- **Frontmatter fields (Claude Code / Cursor):** `name` (matches filename), `description` (trigger phrases + "Use PROACTIVELY when ..."), `tools`, `skills` (preload list), `mcpServers` (`fiber-ai-v2`, `fiber-ai-core`), `model: inherit`, `color`.
+- **Frontmatter fields (OpenCode variant):** `description`, `mode: subagent`, `model: inherit`. Everything else lives in the HTML comment block at the top of the body.
+- **Section order in the body:** `# Identity` -> `## Hard rules (never violated)` -> `## Standard workflows you execute autonomously` -> `## Fiber operation cheatsheet` -> `## <domain>-specific tradeoffs you know cold` -> `## Tone` -> `## When to escalate or hand off` -> `## Canonical reference docs for agents`.
+- **Every operationId cited in a persona must exist** in `backend/clean/public/ai-docs/operation-sidecar.yaml` (the canonical list) or appear in `https://api.fiber.ai/ai-docs/index.md`. Hidden / dev-only operations (`textToCompanySearch`, `textToProfileSearch`, deprecated `bulkReverseEmailLookup`, etc.) are forbidden.
+- **Personas must enforce cost gates.** Any charged operation (`syncQuickContactReveal`, `syncTurboContactEnrichment`, `triggerExhaustiveContactEnrichment`, `startBatchContactDetails`, `buildAudience`, `triggerEnrichment`, `profileLiveEnrich`, `companyLiveEnrich`) must be preceded by a free count / estimate step and explicit user confirmation.
+- **Plain ASCII only** (no em-dashes, no curly quotes, no emojis) inside persona files, same rule as SKILL.md.
+- **Hand-offs across personas** are explicit: each persona lists which persona to delegate to for out-of-scope asks.
+
+### Distributing a new or renamed persona
+
+After editing or adding `agents/<name>.md`:
+
+```bash
+# Cursor (identical frontmatter works for Cursor):
+cp agents/<name>.md cursor/agents/<name>.md
+
+# OpenCode (swap frontmatter to `mode: subagent`):
+cp agents/<name>.md .opencode/agents/<name>.md
+# ...then edit the frontmatter block: remove name/tools/skills/mcpServers/color,
+# add `mode: subagent`, and move the dropped fields into the HTML comment at top of body.
+
+# Codex CLI (run the generator at the root of the plugin):
+bash scripts/generate-codex-agents.sh   # see AGENTS.md for the one-liner we currently use
+```
+
+Also update `README.md` Personas table and the persona list in this file.
+
 ## Changes that require cross-repo updates
 
 If you add or rename a skill:
 
 - Update `README.md` `## Available Commands` table (if the skill is user-invocable via slash command).
 - If the skill adds a new MCP server, update `.mcp.json`, `cursor/mcp.json`, `vscode/mcp.json`, and `gemini-extension.json` together.
+
+If you add or rename a persona:
+
+- Update `README.md` Personas table.
+- Update the persona list at the top of this file and in `.opencode/INSTALL.md`.
+- Re-run the distribution steps above so `cursor/agents/`, `.opencode/agents/`, and `.codex/agents/` stay in sync with `agents/`.
 
 ## Testing locally
 

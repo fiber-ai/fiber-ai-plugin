@@ -59,30 +59,49 @@ If the file already has an `mcp` object, merge — do not overwrite existing ser
 
 If the file does not exist, create it with the full structure above.
 
-## 3. Install the agent skills
+## 3. Install the agent skills and personas
 
-OpenCode agents read skill-style instructions from `AGENTS.md` and/or `.opencode/AGENTS.md`. Do the following:
+OpenCode reads skill-style instructions from `AGENTS.md` and/or `.opencode/AGENTS.md`, and persona subagents from `.opencode/agents/` (and `~/.config/opencode/agents/`). Do the following:
 
-1. Fetch the list of skills from <https://github.com/fiber-ai/fiber-ai-plugin/tree/main/skills>.
-2. Clone the plugin repo into a sibling directory, or fetch the skill Markdown files directly:
+1. Fetch the list of skills from <https://github.com/fiber-ai/fiber-ai-plugin/tree/main/skills> and the personas from <https://github.com/fiber-ai/fiber-ai-plugin/tree/main/.opencode/agents>.
+2. Clone the plugin repo into a sibling directory, or fetch the skill and persona Markdown files directly:
 
    ```bash
    git clone --depth 1 https://github.com/fiber-ai/fiber-ai-plugin .fiber-ai-plugin
    ```
 
-3. Append a "Fiber AI skills" section to the user's project `AGENTS.md` (create it if missing) that points to the cloned skills directory and the canonical Fiber docs:
+3. Copy the persona subagents into the project's `.opencode/agents/` so they auto-load on matching intent:
+
+   ```bash
+   mkdir -p .opencode/agents
+   cp .fiber-ai-plugin/.opencode/agents/*.md .opencode/agents/
+   ```
+
+   This installs five personas: `ai-recruiter`, `ai-sdr`, `gtm-strategist`, `signal-scout`, and `data-quality-auditor`. Users can also invoke them explicitly via `@ai-recruiter`, `@ai-sdr`, `@gtm-strategist`, `@signal-scout`, or `@data-quality-auditor`.
+
+4. Append a "Fiber AI skills and personas" section to the user's project `AGENTS.md` (create it if missing) that points to the cloned skills directory, the installed personas, and the canonical Fiber docs:
 
    ```markdown
-   ## Fiber AI skills
+   ## Fiber AI skills and personas
 
-   Workflow skills for Fiber AI are in `.fiber-ai-plugin/skills/`. When the user expresses one of these intents, load the matching SKILL.md:
+   Persona subagents (auto-load on matching intent, or invoke via `@<name>`):
 
-   - "find companies like X" → `.fiber-ai-plugin/skills/find-similar-companies/SKILL.md`
-   - "enrich these LinkedIn URLs" → `.fiber-ai-plugin/skills/enrich-linkedin-csv/SKILL.md`
-   - "build a recruiting list" → `.fiber-ai-plugin/skills/build-recruiting-audience/SKILL.md`
-   - "reverse lookup these emails" → `.fiber-ai-plugin/skills/expand-from-email-list/SKILL.md`
-   - "enrich these GitHub handles" → `.fiber-ai-plugin/skills/enrich-github-handles/SKILL.md`
-   - "find VPs/CMOs/CTOs at ..." → `.fiber-ai-plugin/skills/find-and-enrich-by-role/SKILL.md`
+   - `@ai-recruiter` - sourcing, JD to pipeline, GitHub + LinkedIn crosswalk, candidate reveal.
+   - `@ai-sdr` - outbound list building, ICP definition, buyer identification, list pruning.
+   - `@gtm-strategist` - pipeline math, market sizing, ABM strategy, scoping before commit.
+   - `@signal-scout` - job-change / hiring / social / funding alerts on a seed list.
+   - `@data-quality-auditor` - reproducible, pre-registered benchmarks vs competing data providers.
+
+   Workflow skills (called by personas, also usable directly):
+
+   - "find companies like X" -> `.fiber-ai-plugin/skills/find-similar-companies/SKILL.md`
+   - "enrich these LinkedIn URLs" -> `.fiber-ai-plugin/skills/enrich-linkedin-csv/SKILL.md`
+   - "build a recruiting list" -> `.fiber-ai-plugin/skills/build-recruiting-audience/SKILL.md`
+   - "reverse lookup these emails" -> `.fiber-ai-plugin/skills/expand-from-email-list/SKILL.md`
+   - "enrich these GitHub handles" -> `.fiber-ai-plugin/skills/enrich-github-handles/SKILL.md`
+   - "find VPs/CMOs/CTOs at ..." -> `.fiber-ai-plugin/skills/find-and-enrich-by-role/SKILL.md`
+   - "track signals on these accounts" -> `.fiber-ai-plugin/skills/track-signals/SKILL.md`
+   - "benchmark Fiber vs PDL/Apollo on this sample" -> `.fiber-ai-plugin/skills/benchmark-vs-competitor/SKILL.md`
 
    Canonical API docs: <https://api.fiber.ai/llms.txt>, <https://api.fiber.ai/ai-docs/index.md>.
    Per-operation docs: <https://api.fiber.ai/ai-docs/{operationId}.md>.
@@ -103,4 +122,4 @@ If the MCP connection fails:
 
 ## 5. Summary to print to the user
 
-"Fiber AI is installed. Try: 'search for Series B fintech in NYC' or 'enrich this LinkedIn URL'. I will route those through the Fiber MCP and the matching skill. Docs: <https://api.fiber.ai/llms.txt>."
+"Fiber AI is installed. Try: 'search for Series B fintech in NYC', 'enrich this LinkedIn URL', or invoke a persona directly with `@ai-recruiter build me a pipeline of staff iOS engineers`, `@ai-sdr build an outbound list of VP Marketing at Series B SaaS`, `@gtm-strategist help me scope an ABM program for infra tools`, `@signal-scout give me job-change alerts for these 50 accounts`, or `@data-quality-auditor run a reproducible benchmark of Fiber vs PDL on my 200-row sample`. I will route those through the Fiber MCP and the matching skill. Docs: <https://api.fiber.ai/llms.txt>."
