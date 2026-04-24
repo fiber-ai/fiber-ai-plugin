@@ -67,7 +67,19 @@ Every API call requires `apiKey` in the request body. Check https://api.fiber.ai
 
 ## Credit Cost
 
-Search charges credits per result found (not per page). Check the current pricing at https://api.fiber.ai/docs/ or via the `llms://fiber.ai/llms.txt` MCP resource, as costs may change.
+Search charges credits per result found (not per page). Check the current pricing via the response's `chargeInfo` object, at <https://api.fiber.ai/ai-docs/companySearch.md> / <https://api.fiber.ai/ai-docs/peopleSearch.md>, or via the `llms://fiber.ai/llms.txt` MCP resource — costs may change.
+
+## For AI agents: machine-readable docs
+
+- **Start here:** <https://api.fiber.ai/llms.txt> — routing policy + critical rules.
+- **Operation index:** <https://api.fiber.ai/ai-docs/index.md> — every public operation, grouped by tag.
+- **Per-operation pages:** <https://api.fiber.ai/ai-docs/{operationId}.md>. Drop one of these straight into the LLM prompt instead of streaming the full OpenAPI spec. Examples for this skill:
+  - <https://api.fiber.ai/ai-docs/companySearch.md>
+  - <https://api.fiber.ai/ai-docs/peopleSearch.md>
+  - <https://api.fiber.ai/ai-docs/jdToProfileSearch.md>
+- **Content negotiation:** send `Accept: text/markdown` to <https://api.fiber.ai/openapi.json> to get the agent-friendly index at the same URL (Stripe pattern).
+- **MCP:** <https://mcp.fiber.ai/mcp/v2> (API key) or <https://mcp.fiber.ai/mcp/v3> (OAuth via Clerk).
+- **MCP quickstart:** <https://docs.fiber.ai/article/using-mcp-in-llms>.
 
 ## Error Handling
 

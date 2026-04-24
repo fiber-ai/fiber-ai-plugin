@@ -4,6 +4,10 @@
       "type": "http",
       "url": "https://mcp.fiber.ai/mcp/v2"
     },
+    "fiber-ai-v3": {
+      "type": "http",
+      "url": "https://mcp.fiber.ai/mcp/v3"
+    },
     "fiber-ai-core": {
       "type": "http",
       "url": "https://mcp.fiber.ai/mcp"

@@ -31,7 +31,7 @@ Find companies by location, industry, employee count, tech stack, funding stage,
 
 ### Enrich
 
-Reveal verified work emails and phone numbers for any professional via `syncContactEnrichment`. Get full company profiles via `companyLiveEnrich` or `kitchenSinkCompany`.
+Reveal verified work emails and phone numbers for any professional via the three-tier contact reveal stack: `syncQuickContactReveal` (standard, balanced), `syncTurboContactEnrichment` (fastest, premium cost), or the async waterfall `triggerExhaustiveContactEnrichment` + `pollExhaustiveContactEnrichmentResult` (highest coverage). Get full company profiles via `companyLiveEnrich` or `kitchenSinkCompany`.
 
 ### Audiences (Bulk Operations)
 
@@ -60,3 +60,12 @@ Most operations cost credits. Costs vary by operation type and may change. Check
 - **API Key**: https://fiber.ai/app/api
 - **API Documentation**: https://api.fiber.ai/docs/
 - **Credits and Billing**: https://www.fiber.ai/app/subscription
+
+## For AI agents: machine-readable docs
+
+- **Start here:** <https://api.fiber.ai/llms.txt> — routing policy + critical rules.
+- **Operation index:** <https://api.fiber.ai/ai-docs/index.md> — every public operation, grouped by tag.
+- **Per-operation pages:** <https://api.fiber.ai/ai-docs/{operationId}.md>. This is the canonical context to drop into an LLM prompt instead of streaming the full OpenAPI spec.
+- **Content negotiation:** send `Accept: text/markdown` to <https://api.fiber.ai/openapi.json> to get the agent-friendly index markdown at the same URL (Stripe pattern).
+- **MCP:** <https://mcp.fiber.ai/mcp/v2> (API key) or <https://mcp.fiber.ai/mcp/v3> (OAuth via Clerk).
+- **MCP quickstart:** <https://docs.fiber.ai/article/using-mcp-in-llms>.

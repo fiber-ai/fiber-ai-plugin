@@ -1,51 +1,133 @@
 # Fiber AI Plugin
 
-Use Fiber AI with your AI coding agent. Search companies, find contacts, enrich data, and manage audiences — directly from Claude Code, Cursor, VS Code, Windsurf, and 40+ other AI agents.
+Use Fiber AI with any AI coding agent. Search companies, find contacts, enrich data, and manage audiences — directly from Claude Code, Cursor, OpenCode, Gemini CLI, Codex CLI, GitHub Copilot CLI, VS Code, Windsurf, and 40+ other AI agents.
 
-## Quick Start
+Fiber MCP ships three HTTP endpoints:
+
+| Endpoint  | URL                           | Auth          | Tools                                                                                                                               | Best For                                                                 |
+| --------- | ----------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| **V2**    | `https://mcp.fiber.ai/mcp/v2` | API key       | Auto-generated direct tools for the top ~10 priority operations                                                                     | Fastest path for common flows: search companies/people, enrich contacts  |
+| **V3**    | `https://mcp.fiber.ai/mcp/v3` | OAuth (SSO)   | Auto-generated direct tools for every public operation, with compact descriptions the model can expand on demand                    | Power users who want SSO login and full tool coverage without meta-tools |
+| **Core**  | `https://mcp.fiber.ai/mcp`    | API key or OAuth | 5 meta-tools: `search_endpoints`, `list_tag_packs`, `list_all_endpoints`, `get_endpoint_details_full`, `call_operation` over every public operation | Low-tool-count surface; agent discovers endpoints at runtime             |
+
+All three use **Streamable HTTP** transport. You can register any combination; the MCP server names stay distinct (`fiber-ai-v2`, `fiber-ai-v3`, `fiber-ai-core`).
+
+---
+
+## Install
+
+All install paths give you the MCP servers plus 13 built-in skills (7 general + 6 playbook workflows).
 
 ### Claude Code
 
 ```bash
-claude plugin marketplace add fiber-ai/fiber-ai-plugin --scope project
-claude plugin install fiber --scope project
+/plugin marketplace add fiber-ai/fiber-ai-plugin
+/plugin install fiber@fiber-tools
 ```
 
-This installs MCP tools, skills, and hooks automatically. Run `/fiber:help` to see available commands.
+This installs MCP tools, skills, rules, and hooks in one shot. Run `/fiber:help` to list commands.
+
+Team sharing (optional) — commit a `.mcp.json` at the project root so teammates get Fiber AI automatically:
+
+```json
+{
+  "mcpServers": {
+    "fiber-ai-v2": { "type": "http", "url": "https://mcp.fiber.ai/mcp/v2" },
+    "fiber-ai-v3": { "type": "http", "url": "https://mcp.fiber.ai/mcp/v3" },
+    "fiber-ai-core": { "type": "http", "url": "https://mcp.fiber.ai/mcp" }
+  }
+}
+```
 
 ### Cursor
 
-```bash
-cursor-plugin marketplace add fiber-ai/fiber-ai-plugin --scope project
-cursor-plugin install fiber-ai --scope project
-```
+**Option A — Deeplink (paste in your browser, Cursor must be installed):**
 
-This installs MCP servers, skills, rules, and slash commands (`/fiber-search`, `/fiber-enrich`, `/fiber-audience`, `/fiber-setup`).
-
-**Or add MCP only via deeplink** — copy and paste into your browser:
+V2 (recommended for most users, API key auth):
 
 ```
 cursor://anysphere.cursor-deeplink/mcp/install?name=fiber-ai-v2&config=eyJ0eXBlIjoiaHR0cCIsInVybCI6Imh0dHBzOi8vbWNwLmZpYmVyLmFpL21jcC92MiJ9
 ```
 
-For the Core MCP server (all 100+ endpoints via meta-tools):
+V3 (every public operation, OAuth / SSO auth):
+
+```
+cursor://anysphere.cursor-deeplink/mcp/install?name=fiber-ai-v3&config=eyJ0eXBlIjoiaHR0cCIsInVybCI6Imh0dHBzOi8vbWNwLmZpYmVyLmFpL21jcC92MyJ9
+```
+
+Core (5 meta-tools over every public operation):
 
 ```
 cursor://anysphere.cursor-deeplink/mcp/install?name=fiber-ai-core&config=eyJ0eXBlIjoiaHR0cCIsInVybCI6Imh0dHBzOi8vbWNwLmZpYmVyLmFpL21jcCJ9
 ```
 
-**Option B — Manual:**
+**Option B — Manual:** copy `cursor/mcp.json` from this repo to your project's `.cursor/mcp.json`. Optionally copy `cursor/rules/fiber-api.mdc` to `.cursor/rules/` for inline agent guidance.
 
-Copy `cursor/mcp.json` to your project's `.cursor/mcp.json`, or add to Cursor Settings > Features > MCP:
+### OpenCode
 
-| Name            | Type   | URL                           | Best For                                  |
-| --------------- | ------ | ----------------------------- | ----------------------------------------- |
-| `fiber-ai-v2`   | `HTTP` | `https://mcp.fiber.ai/mcp/v2` | ~10 direct tools for common operations    |
-| `fiber-ai-core` | `HTTP` | `https://mcp.fiber.ai/mcp`    | 4 meta-tools accessing all 100+ endpoints |
+In your OpenCode session, tell the agent:
 
-**Optional — Add agent rules:**
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/fiber-ai/fiber-ai-plugin/main/.opencode/INSTALL.md
+```
 
-Copy `cursor/rules/fiber-api.mdc` to your project's `.cursor/rules/` directory.
+The agent will register the Fiber MCP servers (V2, V3, Core), clone the skills, and append a "Fiber AI skills" section to your project `AGENTS.md`.
+
+### Gemini CLI
+
+```bash
+gemini extensions install https://github.com/fiber-ai/fiber-ai-plugin
+```
+
+To update later:
+
+```bash
+gemini extensions update fiber-ai
+```
+
+The repo ships a `gemini-extension.json` that registers all three Fiber MCP endpoints (V2, V3, Core) and exposes the skills via the `AGENTS.md` context file.
+
+### OpenAI Codex CLI
+
+Codex CLI reads MCP servers from `~/.codex/config.toml`. Append:
+
+```toml
+[mcp_servers.fiber-ai-v2]
+url = "https://mcp.fiber.ai/mcp/v2"
+transport = "http"
+
+[mcp_servers.fiber-ai-v3]
+url = "https://mcp.fiber.ai/mcp/v3"
+transport = "http"
+
+[mcp_servers.fiber-ai-core]
+url = "https://mcp.fiber.ai/mcp"
+transport = "http"
+```
+
+Then export your API key (V2 and Core support API-key auth; V3 uses OAuth SSO instead):
+
+```bash
+export FIBER_API_KEY=sk_live_...
+```
+
+To load the playbook skills, clone this repo next to your project and reference it in your Codex system prompt, or copy individual `skills/*/SKILL.md` files into your Codex skills directory.
+
+### GitHub Copilot CLI
+
+Copilot CLI reads MCP servers from `~/.config/github-copilot/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "fiber-ai-v2": { "type": "http", "url": "https://mcp.fiber.ai/mcp/v2" },
+    "fiber-ai-v3": { "type": "http", "url": "https://mcp.fiber.ai/mcp/v3" },
+    "fiber-ai-core": { "type": "http", "url": "https://mcp.fiber.ai/mcp" }
+  }
+}
+```
+
+Copilot CLI picks up `AGENTS.md` automatically — clone or symlink this repo into your workspace to surface the skills to the agent.
 
 ### VS Code
 
@@ -54,32 +136,36 @@ Add to your `.vscode/mcp.json`:
 ```json
 {
   "mcpServers": {
-    "fiber-ai-v2": {
-      "type": "http",
-      "url": "https://mcp.fiber.ai/mcp/v2"
-    },
-    "fiber-ai-core": {
-      "type": "http",
-      "url": "https://mcp.fiber.ai/mcp"
-    }
+    "fiber-ai-v2": { "type": "http", "url": "https://mcp.fiber.ai/mcp/v2" },
+    "fiber-ai-v3": { "type": "http", "url": "https://mcp.fiber.ai/mcp/v3" },
+    "fiber-ai-core": { "type": "http", "url": "https://mcp.fiber.ai/mcp" }
   }
 }
 ```
 
+The skills live in `skills/` — VS Code agents such as GitHub Copilot Chat honor the `AGENTS.md` file in your workspace root.
+
 ### Windsurf
 
-Add MCP servers in Windsurf settings (Transport: HTTP):
+Add the three MCP servers in Windsurf Settings (Transport: HTTP):
 
-- **V2**: `https://mcp.fiber.ai/mcp/v2` — direct tools for common operations
-- **Core**: `https://mcp.fiber.ai/mcp` — meta-tools for all 100+ endpoints
+- **V2** (API key): `https://mcp.fiber.ai/mcp/v2`
+- **V3** (OAuth): `https://mcp.fiber.ai/mcp/v3`
+- **Core** (API key or OAuth): `https://mcp.fiber.ai/mcp`
 
-Copy `windsurf/rules/fiber-api.md` to your project's Windsurf rules directory for agent guidance.
+Copy `windsurf/rules/fiber-api.md` from this repo to your Windsurf rules directory.
 
-### Other Agents (via skills.sh)
+### Any other agent (via skills.sh)
 
 Install individual skills for any agent that supports [skills.sh](https://skills.sh):
 
 ```bash
+npx skills add fiber-ai/fiber-ai-plugin --skill find-similar-companies
+npx skills add fiber-ai/fiber-ai-plugin --skill enrich-linkedin-csv
+npx skills add fiber-ai/fiber-ai-plugin --skill build-recruiting-audience
+npx skills add fiber-ai/fiber-ai-plugin --skill expand-from-email-list
+npx skills add fiber-ai/fiber-ai-plugin --skill enrich-github-handles
+npx skills add fiber-ai/fiber-ai-plugin --skill find-and-enrich-by-role
 npx skills add fiber-ai/fiber-ai-plugin --skill search
 npx skills add fiber-ai/fiber-ai-plugin --skill enrich
 npx skills add fiber-ai/fiber-ai-plugin --skill audience
@@ -89,68 +175,49 @@ npx skills add fiber-ai/fiber-ai-plugin --skill setup
 npx skills add fiber-ai/fiber-ai-plugin --skill help
 ```
 
-### Team Sharing
-
-Commit an MCP config to your repository so teammates get Fiber AI automatically:
-
-**Claude Code** — add to `.mcp.json` at project root:
-
-```json
-{
-  "mcpServers": {
-    "fiber-ai-v2": {
-      "type": "http",
-      "url": "https://mcp.fiber.ai/mcp/v2"
-    },
-    "fiber-ai-core": {
-      "type": "http",
-      "url": "https://mcp.fiber.ai/mcp"
-    }
-  }
-}
-```
-
-**Cursor** — add to `.cursor/mcp.json` at project root (same format as above).
-
 ---
 
 ## Authentication
 
-1. Get your API key from [fiber.ai/app/api](https://fiber.ai/app/api)
+1. Get your API key from [fiber.ai/app/api](https://fiber.ai/app/api).
 2. Set it as an environment variable:
 
-```bash
-export FIBER_API_KEY=sk_live_...
-```
+   ```bash
+   export FIBER_API_KEY=sk_live_...
+   ```
 
-Add to your shell profile (`~/.zshrc` or `~/.bashrc`) for persistence.
+   Add to `~/.zshrc` / `~/.bashrc` for persistence.
 
----
-
-## Available Commands
-
-| Command                         | Description                                                      |
-| ------------------------------- | ---------------------------------------------------------------- |
-| `/fiber:search "query"`         | Search for companies or people by criteria                       |
-| `/fiber:enrich "target"`        | Reveal emails, phones, and profiles for contacts or companies    |
-| `/fiber:audience "description"` | Build prospecting lists with bulk search, enrichment, and export |
-| `/fiber:sdk-ts "what to build"` | Help writing TypeScript code with `@fiberai/sdk`                 |
-| `/fiber:sdk-py "what to build"` | Help writing Python code with `fiberai`                          |
-| `/fiber:setup`                  | Configure API key and verify MCP connection                      |
-| `/fiber:help`                   | Show capabilities and available commands                         |
+The MCP servers read your key from the client's request headers. Nothing is stored inside the plugin itself.
 
 ---
 
-## MCP Servers
+## What you get
 
-Fiber AI provides two MCP endpoints:
+Fiber ships 13 skills. Each has a slash command (so the user can invoke it directly) and an auto-trigger description (so agents load it automatically on matching intent).
 
-| Endpoint | URL                           | Tools                                      | Best For                                         |
-| -------- | ----------------------------- | ------------------------------------------ | ------------------------------------------------ |
-| **V2**   | `https://mcp.fiber.ai/mcp/v2` | ~10 curated, direct API tools              | Most users — search, enrich, audience management |
-| **Core** | `https://mcp.fiber.ai/mcp`    | 4 meta-tools (search, list, details, call) | Power users — access to all 100+ API endpoints   |
+### Playbook skills (auto-trigger on buyer / recruiter intent)
 
-Both use **HTTP (Streamable HTTP)** transport.
+| Skill                              | Trigger phrases                                                           |
+| ---------------------------------- | ------------------------------------------------------------------------- |
+| `/fiber:find-similar-companies`    | "find companies like <seed>", "competitors of <seed>", "ABM lookalikes"   |
+| `/fiber:enrich-linkedin-csv`       | "enrich these LinkedIn URLs", "bulk reveal emails for this list"          |
+| `/fiber:build-recruiting-audience` | "build a recruiting list", "sourcing list for VP Eng at fintech"          |
+| `/fiber:expand-from-email-list`    | "I have emails — give me LinkedIn + company", "reverse lookup emails"     |
+| `/fiber:enrich-github-handles`     | "enrich these GitHub users", "find LinkedIn for these contributors"       |
+| `/fiber:find-and-enrich-by-role`   | "find VPs of Engineering at Series B SaaS", "CMOs in healthcare"          |
+
+### General skills
+
+| Skill             | Description                                                        |
+| ----------------- | ------------------------------------------------------------------ |
+| `/fiber:search`   | Search companies or people by criteria                             |
+| `/fiber:enrich`   | Reveal emails, phones, and profiles for a known contact or company |
+| `/fiber:audience` | Build and export lists via the full audience lifecycle             |
+| `/fiber:sdk-ts`   | Help writing TypeScript code with `@fiberai/sdk`                   |
+| `/fiber:sdk-py`   | Help writing Python code with `fiberai`                            |
+| `/fiber:setup`    | Configure API key and verify MCP connection                        |
+| `/fiber:help`     | Show capabilities and available commands                           |
 
 ---
 
@@ -160,6 +227,24 @@ For building applications programmatically:
 
 - **TypeScript**: `npm install @fiberai/sdk` — [GitHub](https://github.com/fiber-ai/typescript-sdk)
 - **Python**: `pip install fiberai` — [GitHub](https://github.com/fiber-ai/python-sdk)
+
+Both SDKs ship their own `llms.txt` pointing back at the canonical API docs.
+
+---
+
+## For AI agents (machine-readable)
+
+Point your LLM / coding agent at these endpoints when building against Fiber:
+
+- **Routing index + critical rules:** <https://api.fiber.ai/llms.txt>
+- **Operation index (Stripe-style):** <https://api.fiber.ai/ai-docs/index.md>
+- **Per-operation pages:** `https://api.fiber.ai/ai-docs/<operationId>.md` (e.g. [`companySearch`](https://api.fiber.ai/ai-docs/companySearch.md), [`syncQuickContactReveal`](https://api.fiber.ai/ai-docs/syncQuickContactReveal.md), [`syncTurboContactEnrichment`](https://api.fiber.ai/ai-docs/syncTurboContactEnrichment.md), [`triggerExhaustiveContactEnrichment`](https://api.fiber.ai/ai-docs/triggerExhaustiveContactEnrichment.md))
+- **Full concatenated corpus (RAG):** <https://api.fiber.ai/llms-full.txt>
+- **OpenAPI (JSON):** <https://api.fiber.ai/openapi.json> — send `Accept: text/markdown` on the same URL for the agent-friendly markdown index
+- **MCP:** `https://mcp.fiber.ai/mcp/v2` (direct tools, API key) · `https://mcp.fiber.ai/mcp/v3` (direct tools over every public operation, OAuth / SSO) · `https://mcp.fiber.ai/mcp` (5 meta-tools, API key or OAuth)
+- **MCP quickstart:** <https://docs.fiber.ai/article/using-mcp-in-llms>
+
+Authoring rules for anyone extending this plugin: see [`AGENTS.md`](./AGENTS.md).
 
 ---
 

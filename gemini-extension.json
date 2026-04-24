@@ -1,0 +1,17 @@
+{
+  "name": "fiber-ai",
+  "version": "1.0.0",
+  "description": "Fiber AI MCP extension. fiber-ai-v2 exposes auto-generated direct tools for the top ~10 priority operations (API-key auth). fiber-ai-v3 exposes direct tools for every public operation with compact descriptions (OAuth / SSO auth). fiber-ai-core exposes meta-tools (search_endpoints, list_tag_packs, list_all_endpoints, get_endpoint_details_full, call_operation) over every public operation.",
+  "mcpServers": {
+    "fiber-ai-v2": {
+      "httpUrl": "https://mcp.fiber.ai/mcp/v2"
+    },
+    "fiber-ai-v3": {
+      "httpUrl": "https://mcp.fiber.ai/mcp/v3"
+    },
+    "fiber-ai-core": {
+      "httpUrl": "https://mcp.fiber.ai/mcp"
+    }
+  },
+  "contextFileName": "AGENTS.md"
+}
