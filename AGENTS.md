@@ -5,7 +5,7 @@ This repository ships Fiber AI as a first-class plugin for AI coding agents (Cla
 ## What this repo contains
 
 - `skills/` — per-workflow skills (Markdown). Each skill has a `SKILL.md` with YAML frontmatter (`name`, `description`, `user-invocable`, `argument-hint`). The `description` is what other agents match against to auto-load the skill, so it must contain realistic user trigger phrases.
-- `agents/` — persona subagent files (Claude Code / Cursor / OpenCode compatible). Flat `.md` files; each is a full subagent system prompt with YAML frontmatter. See "Persona authoring rules" below. Current personas: `ai-recruiter`, `ai-sdr`, `gtm-strategist`, `signal-scout`, `data-quality-auditor`.
+- `agents/` — persona subagent files (Claude Code / Cursor / OpenCode compatible). Flat `.md` files; each is a full subagent system prompt with YAML frontmatter. See "Persona authoring rules" below. Current personas: `ai-recruiter`, `ai-sdr`, `gtm-strategist`, `signal-scout`, `data-quality-auditor`, `product-engineer`, `fiber-sde`.
 - `cursor/agents/` — Cursor-compatible copies of the persona files (plain `cp` from `agents/`).
 - `.opencode/agents/` — OpenCode-compatible copies of the persona files (`cp` + frontmatter swap: `name`/`tools`/`skills`/`mcpServers`/`color` removed, `mode: subagent` added).
 - `.codex/agents/` — Codex CLI TOML translations of the persona files. Generated from `agents/*.md` via a small bash script; the developer instructions body is copied verbatim, not re-authored.
@@ -30,7 +30,7 @@ When a skill references an operation, link to `https://api.fiber.ai/ai-docs/<ope
 
 ## Skill authoring rules
 
-- **Use real operationIds only.** Verify against `backend/clean/public/ai-docs/operation-sidecar.yaml` (the canonical list in the backend repo) or grep `backend/clean/src/api/routes/**`. Never invent operationIds — they will 404 at `/ai-docs/<op>.md`.
+- **Use real operationIds only.** Verify against `https://api.fiber.ai/ai-docs/index.md` (the canonical list). Never invent operationIds — they will 404 at `/ai-docs/<op>.md`.
 - **Preserve casing** exactly as registered (e.g. `KitchenSinkProfile`, `kitchenSinkCompany`).
 - **No em-dashes, no curly quotes, no emojis** in skill files. Plain ASCII only.
 - **Frontmatter description must include natural-language trigger phrases** (e.g. "find companies like", "enrich these LinkedIn URLs"). That is how Claude Code / Cursor auto-load the skill.
@@ -45,7 +45,7 @@ Personas live in `agents/<name>.md` (canonical source). A persona is a domain-ex
 - **Frontmatter fields (Claude Code / Cursor):** `name` (matches filename), `description` (trigger phrases + "Use PROACTIVELY when ..."), `tools`, `skills` (preload list), `mcpServers` (`fiber-ai-v2`, `fiber-ai-core`), `model: inherit`, `color`.
 - **Frontmatter fields (OpenCode variant):** `description`, `mode: subagent`, `model: inherit`. Everything else lives in the HTML comment block at the top of the body.
 - **Section order in the body:** `# Identity` -> `## Hard rules (never violated)` -> `## Standard workflows you execute autonomously` -> `## Fiber operation cheatsheet` -> `## <domain>-specific tradeoffs you know cold` -> `## Tone` -> `## When to escalate or hand off` -> `## Canonical reference docs for agents`.
-- **Every operationId cited in a persona must exist** in `backend/clean/public/ai-docs/operation-sidecar.yaml` (the canonical list) or appear in `https://api.fiber.ai/ai-docs/index.md`. Hidden / dev-only operations (`textToCompanySearch`, `textToProfileSearch`, deprecated `bulkReverseEmailLookup`, etc.) are forbidden.
+- **Every operationId cited in a persona must exist** in `https://api.fiber.ai/ai-docs/index.md` (the canonical list) or appear in `https://api.fiber.ai/ai-docs/index.md`. Hidden / dev-only operations (`textToCompanySearch`, `textToProfileSearch`, deprecated `bulkReverseEmailLookup`, etc.) are forbidden.
 - **Personas must enforce cost gates.** Any charged operation (`syncQuickContactReveal`, `syncTurboContactEnrichment`, `triggerExhaustiveContactEnrichment`, `startBatchContactDetails`, `buildAudience`, `triggerEnrichment`, `profileLiveEnrich`, `companyLiveEnrich`) must be preceded by a free count / estimate step and explicit user confirmation.
 - **Plain ASCII only** (no em-dashes, no curly quotes, no emojis) inside persona files, same rule as SKILL.md.
 - **Hand-offs across personas** are explicit: each persona lists which persona to delegate to for out-of-scope asks.

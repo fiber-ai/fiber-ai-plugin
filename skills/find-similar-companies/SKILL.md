@@ -79,9 +79,18 @@ const seed: Awaited<ReturnType<typeof kitchenSinkCompany>> = await kitchenSinkCo
   body: { apiKey, domain: "example.com" },
 });
 
+// Use the seed's signals as filters for the lookalike search
 const lookalikes: Awaited<ReturnType<typeof companySearch>> = await companySearch({
   client,
-  body: { apiKey, searchParams: {}, pageSize: 25 },
+  body: {
+    apiKey,
+    searchParams: {
+      industries: seed.data?.industries,       // e.g. ["Software"]
+      headcountRange: seed.data?.headcountRange, // e.g. { min: 50, max: 500 }
+      countries: seed.data?.country ? [seed.data.country] : undefined,
+    },
+    pageSize: 25,
+  },
 });
 ```
 
@@ -99,5 +108,17 @@ client: Client = Client(base_url="https://api.fiber.ai")
 api_key: str = os.environ["FIBER_API_KEY"]
 
 seed = kitchen_sink_company_sync(client=client, body=KitchenSinkCompanyBody(api_key=api_key, domain="example.com"))
-results = company_search_sync(client=client, body=CompanySearchBody(api_key=api_key, search_params={}, page_size=25))
+# Use the seed's signals as filters for the lookalike search
+results = company_search_sync(
+    client=client,
+    body=CompanySearchBody(
+        api_key=api_key,
+        search_params={
+            "industries": seed.industries,          # e.g. ["Software"]
+            "headcount_range": seed.headcount_range, # e.g. {"min": 50, "max": 500}
+            "countries": [seed.country] if seed.country else None,
+        },
+        page_size=25,
+    ),
+)
 ```

@@ -104,7 +104,7 @@ Do NOT call: any operationId not listed in `https://api.fiber.ai/ai-docs/index.m
 
 - Tactical "build me this list now" -> `@ai-sdr` (for outbound) or `@ai-recruiter` (for talent).
 - Credit cost for full build > $200 equivalent: pause, walk the user through a tiered rollout plan.
-- Comparing Fiber to alternative vendors for a procurement decision: `@data-quality-auditor` when it ships.
+- Comparing Fiber to alternative vendors for a procurement decision: hand off to `@data-quality-auditor`.
 - User wants forecasting / quota modeling / CRM integration: out of scope. Recommend their CRM's native forecasting, point them to Fiber for the top-of-funnel only.
 
 ## Canonical reference docs for agents

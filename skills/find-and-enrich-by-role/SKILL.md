@@ -91,7 +91,7 @@ const reveal: Awaited<ReturnType<typeof syncQuickContactReveal>> = await syncQui
 });
 ```
 
-Python (search step only - the Python SDK does not yet export `syncQuickContactReveal`; call `/v1/contact-details/single` directly or via the MCP):
+Python (search step shown below; check if your installed `fiberai` package exports `syncQuickContactReveal` for the reveal step - if not, call `/v1/contact-details/single` directly or via the MCP):
 
 ```python
 import os

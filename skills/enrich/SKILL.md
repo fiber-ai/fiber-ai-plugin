@@ -39,7 +39,12 @@ Fiber exposes three tiers for single-profile contact reveal. Pick by latency vs 
 **Via V2 MCP (if available as a generated tool):**
 - Look for `syncQuickContactReveal_tool` — it may be available depending on the server's tool generation priority.
 
-The `enrichmentType` object controls what data to fetch (e.g., work emails, personal emails, phone numbers). Always call `get_endpoint_details_full` to see the exact field names and options.
+The `enrichmentType` object controls what data to fetch (e.g., work emails, personal emails, phone numbers). Fiber's schemas are large and evolve across versions — never hardcode field names. Discover the current schema via:
+
+1. **Installed SDK packages**: `@fiberai/sdk` (TypeScript) or `fiberai` (Python) export typed models with all fields. Install: `npm install @fiberai/sdk` / `pip install fiberai`.
+2. **MCP**: call `get_endpoint_details_full("syncQuickContactReveal")` on the Core MCP for the exact current schema.
+3. **Online docs**: `https://api.fiber.ai/ai-docs/syncQuickContactReveal.md`, `https://api.fiber.ai/llms.txt`, or `https://api.fiber.ai/docs/`.
+4. **Open-source examples**: `https://github.com/fiber-ai/open-fiber`.
 
 ### Company Enrichment
 

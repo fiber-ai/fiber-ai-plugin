@@ -49,6 +49,15 @@ const result = await companySearch({
 - All functions are async and return typed responses
 - `zod` is included for runtime validation schemas
 
+## Schema & Type Discovery
+
+Fiber's request/response schemas are large and evolve across versions. The SDK is the best source of truth for field names and types:
+
+1. **From the installed package**: check the exported types in `@fiberai/sdk`. Every operation function has fully typed parameters and return values. Use IDE autocomplete or inspect `node_modules/@fiberai/sdk` to discover available fields for `searchParams`, `enrichmentType`, etc.
+2. **From online docs**: per-operation pages at `https://api.fiber.ai/ai-docs/<operationId>.md` describe every field with examples. Start with `https://api.fiber.ai/llms.txt` for routing.
+3. **From MCP at runtime**: call `get_endpoint_details_full("<operationId>")` on the Core MCP to get the full current schema.
+4. **Open-source examples**: `https://github.com/fiber-ai/open-fiber` has working code samples.
+
 ## Important Rules
 
 - Always use environment variables for API keys — never hardcode secrets

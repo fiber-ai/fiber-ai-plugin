@@ -91,9 +91,9 @@ for (const url of urls) {
 }
 ```
 
-The batch endpoints (`startBatchContactDetails` + `pollBatchContactDetails`) are available at `https://api.fiber.ai/ai-docs/startBatchContactDetails.md` and `https://api.fiber.ai/ai-docs/pollBatchContactDetails.md`. The typed SDK wrappers will land in the next `@fiberai/sdk` release; until then call them via `fetch` or the MCP.
+The batch endpoints (`startBatchContactDetails` + `pollBatchContactDetails`) are available at `https://api.fiber.ai/ai-docs/startBatchContactDetails.md` and `https://api.fiber.ai/ai-docs/pollBatchContactDetails.md`. Check if your installed `@fiberai/sdk` version exports these functions; if not, call them via `fetch` or the MCP.
 
-Python - the Python SDK does not yet export `syncQuickContactReveal`. Call the endpoint directly with `httpx`, or use the MCP / TypeScript SDK in the meantime:
+Python - check if your installed `fiberai` package exports `syncQuickContactReveal` (inspect `fiberai.api.contact_details`). If not available in your version, call the endpoint directly with `httpx` or use the MCP:
 
 ```python
 import os

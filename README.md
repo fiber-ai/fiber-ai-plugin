@@ -16,7 +16,7 @@ All three use **Streamable HTTP** transport. You can register any combination; t
 
 ## Install
 
-All install paths give you the MCP servers, 15 built-in skills (7 general + 8 playbook workflows), and 5 persona subagents (`ai-recruiter`, `ai-sdr`, `gtm-strategist`, `signal-scout`, `data-quality-auditor`) that do the work like a human teammate with full Fiber product knowledge.
+All install paths give you the MCP servers, 16 built-in skills (8 general + 8 playbook workflows), and 7 persona subagents (`ai-recruiter`, `ai-sdr`, `gtm-strategist`, `signal-scout`, `data-quality-auditor`, `product-engineer`, `fiber-sde`) that do the work like a human teammate with full Fiber product knowledge.
 
 ### Claude Code
 
@@ -125,7 +125,7 @@ To load the playbook skills, clone this repo next to your project and reference 
 mkdir -p .codex/agents && cp path/to/fiber-ai-plugin/.codex/agents/*.toml .codex/agents/
 ```
 
-Then invoke any of `@ai-recruiter`, `@ai-sdr`, `@gtm-strategist`, `@signal-scout`, or `@data-quality-auditor` inside Codex.
+Then invoke any of `@ai-recruiter`, `@ai-sdr`, `@gtm-strategist`, `@signal-scout`, `@data-quality-auditor`, `@product-engineer`, or `@fiber-sde` inside Codex.
 
 ### GitHub Copilot CLI
 
@@ -187,6 +187,7 @@ npx skills add fiber-ai/fiber-ai-plugin --skill enrich
 npx skills add fiber-ai/fiber-ai-plugin --skill audience
 npx skills add fiber-ai/fiber-ai-plugin --skill sdk-ts
 npx skills add fiber-ai/fiber-ai-plugin --skill sdk-py
+npx skills add fiber-ai/fiber-ai-plugin --skill quickstart
 npx skills add fiber-ai/fiber-ai-plugin --skill setup
 npx skills add fiber-ai/fiber-ai-plugin --skill help
 ```
@@ -210,7 +211,7 @@ The MCP servers read your key from the client's request headers. Nothing is stor
 
 ## What you get
 
-Fiber ships 5 persona subagents + 15 skills. Personas are the "hire an AI teammate" unit - they carry domain expertise (recruiting, sales, GTM, signal tracking, data QA) plus full Fiber product knowledge so the user does not have to teach their LLM about either. Skills are the underlying workflow primitives the personas call into.
+Fiber ships 7 persona subagents + 16 skills. Personas are the "hire an AI teammate" unit - they carry domain expertise (recruiting, sales, GTM, signal tracking, data QA, product integration, software development) plus full Fiber product knowledge so the user does not have to teach their LLM about either. Skills are the underlying workflow primitives the personas call into.
 
 ### Persona subagents (auto-load on matching intent, or invoke via `@<name>`)
 
@@ -221,6 +222,8 @@ Fiber ships 5 persona subagents + 15 skills. Personas are the "hire an AI teamma
 | `@gtm-strategist`        | Head of Sales / Head of GTM; thinks in pipeline math before running anything  | "GTM plan", "ABM strategy", "grow from $X to $Y", "pipeline math", "scope this campaign", "territory planning", "how many accounts do I need"             |
 | `@signal-scout`          | Intent-signal operator; turns a static list into a live feed of buying events | "track signals", "watch these accounts", "job-change alerts", "who is hiring at my targets", "recent funding at my accounts", "signal-driven outbound"    |
 | `@data-quality-auditor`  | Rigorous, vendor-agnostic data-quality analyst; runs reproducible bake-offs   | "compare Fiber to <vendor>", "bake-off", "benchmark data quality", "evaluate Fiber AI", "should I switch from <vendor>", "which provider is better for my segment" |
+| `@product-engineer`      | Product engineer for real-time enrichment integrations and API pipelines      | "enrich on signup", "integrate Fiber into my app", "company logo from domain", "profile completion", "identity resolution", "job board enrichment"                  |
+| `@fiber-sde`             | Software engineer for building apps, scripts, and integrations with Fiber SDKs | "build with Fiber", "write code", "Fiber SDK", "TypeScript SDK", "Python SDK", "automate", "script", "data pipeline", "how do I call"                              |
 
 Each persona:
 
@@ -252,6 +255,7 @@ Each persona:
 | `/fiber:audience` | Build and export lists via the full audience lifecycle             |
 | `/fiber:sdk-ts`   | Help writing TypeScript code with `@fiberai/sdk`                   |
 | `/fiber:sdk-py`   | Help writing Python code with `fiberai`                            |
+| `/fiber:quickstart` | Guided first-run: verify key, search companies, reveal one contact |
 | `/fiber:setup`    | Configure API key and verify MCP connection                        |
 | `/fiber:help`     | Show capabilities and available commands                           |
 
@@ -265,6 +269,8 @@ For building applications programmatically:
 - **Python**: `pip install fiberai` — [GitHub](https://github.com/fiber-ai/python-sdk)
 
 Both SDKs ship their own `llms.txt` pointing back at the canonical API docs.
+
+For open-source examples, reference implementations, and community patterns: [github.com/fiber-ai/open-fiber](https://github.com/fiber-ai/open-fiber).
 
 ---
 

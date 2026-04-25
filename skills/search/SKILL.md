@@ -35,16 +35,27 @@ The V2 MCP has direct tools for search. Tool names follow the pattern `{operatio
 1. Call `get_endpoint_details_full("companySearch")` or `get_endpoint_details_full("peopleSearch")` to get the exact parameter schema
 2. Call `call_operation("companySearch", {"body": {...}})` or `call_operation("peopleSearch", {"body": {...}})` with the correct parameters
 
-### Parameter Discovery
+### Parameter & Schema Discovery
 
-**Always call `get_endpoint_details_full` before constructing search parameters.** The filter schemas are complex and change over time. Do not guess parameter names — fetch the current schema from the MCP or refer to https://api.fiber.ai/docs/ for the interactive API documentation.
+Fiber's search filter schemas are large and evolve across versions. **Never hardcode or guess field names.** Discover the current schema at runtime using one of these methods (in preference order):
 
-Key structural notes:
+1. **Installed SDK packages** (best when writing code):
+   - TypeScript: `@fiberai/sdk` exports typed request/response models. Check `node_modules/@fiberai/sdk` types or use IDE autocomplete. Install: `npm install @fiberai/sdk`.
+   - Python: `fiberai` ships typed model classes (e.g. `fiberai.models.CompanySearchBody`). Inspect with `help()` or IDE. Install: `pip install fiberai`.
+2. **MCP runtime discovery** (best for chat/MCP flows):
+   - Call `get_endpoint_details_full("companySearch")` or `get_endpoint_details_full("peopleSearch")` on the Core MCP to get the exact current schema with all filter fields.
+3. **Online docs** (fallback):
+   - Per-operation: `https://api.fiber.ai/ai-docs/companySearch.md` / `https://api.fiber.ai/ai-docs/peopleSearch.md`
+   - Routing index: `https://api.fiber.ai/llms.txt`
+   - Interactive: `https://api.fiber.ai/docs/`
+   - Open-source examples: `https://github.com/fiber-ai/open-fiber`
+
+Key structural notes (stable across versions):
 - The request body wraps filters inside a `searchParams` object (not `filters`)
 - Pagination uses `cursor` (not `page`) and `pageSize`
 - `apiKey` is a required field in the request body
 
-Example body structure (verify exact field names via `get_endpoint_details_full`):
+Example body structure (verify exact field names via methods above):
 ```json
 {
   "apiKey": "...",

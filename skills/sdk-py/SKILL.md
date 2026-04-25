@@ -51,6 +51,15 @@ result = company_search_sync(
 - Pagination uses `cursor` (not `page`)
 - The `Client` and `AuthenticatedClient` are the two exported client classes
 
+## Schema & Type Discovery
+
+Fiber's request/response schemas are large and evolve across versions. The SDK is the best source of truth:
+
+1. **From the installed package**: inspect `fiberai.models.<ModelName>` for every field. Use `help(fiberai.models.CompanySearchBody)` or IDE autocomplete to discover available fields for `search_params`, `enrichment_type`, etc. Model classes enforce correct field names at construction time.
+2. **From online docs**: per-operation pages at `https://api.fiber.ai/ai-docs/<operationId>.md` describe every field with examples. Start with `https://api.fiber.ai/llms.txt` for routing.
+3. **From MCP at runtime**: call `get_endpoint_details_full("<operationId>")` on the Core MCP to get the full current schema.
+4. **Open-source examples**: `https://github.com/fiber-ai/open-fiber` has working code samples.
+
 ## Async Support
 
 The same `Client` instance supports async via the `asyncio` function variant:

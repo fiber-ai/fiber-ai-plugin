@@ -77,7 +77,7 @@ OpenCode reads skill-style instructions from `AGENTS.md` and/or `.opencode/AGENT
    cp .fiber-ai-plugin/.opencode/agents/*.md .opencode/agents/
    ```
 
-   This installs five personas: `ai-recruiter`, `ai-sdr`, `gtm-strategist`, `signal-scout`, and `data-quality-auditor`. Users can also invoke them explicitly via `@ai-recruiter`, `@ai-sdr`, `@gtm-strategist`, `@signal-scout`, or `@data-quality-auditor`.
+   This installs seven personas: `ai-recruiter`, `ai-sdr`, `gtm-strategist`, `signal-scout`, `data-quality-auditor`, `product-engineer`, and `fiber-sde`. Users can also invoke them explicitly via `@ai-recruiter`, `@ai-sdr`, `@gtm-strategist`, `@signal-scout`, `@data-quality-auditor`, `@product-engineer`, or `@fiber-sde`.
 
 4. Append a "Fiber AI skills and personas" section to the user's project `AGENTS.md` (create it if missing) that points to the cloned skills directory, the installed personas, and the canonical Fiber docs:
 
@@ -91,6 +91,8 @@ OpenCode reads skill-style instructions from `AGENTS.md` and/or `.opencode/AGENT
    - `@gtm-strategist` - pipeline math, market sizing, ABM strategy, scoping before commit.
    - `@signal-scout` - job-change / hiring / social / funding alerts on a seed list.
    - `@data-quality-auditor` - reproducible, pre-registered benchmarks vs competing data providers.
+   - `@product-engineer` - real-time enrichment integrations, signup flows, identity resolution, API pipelines.
+   - `@fiber-sde` - code generation, SDK usage, scripts, automations, and custom integrations with Fiber APIs.
 
    Workflow skills (called by personas, also usable directly):
 
@@ -122,4 +124,4 @@ If the MCP connection fails:
 
 ## 5. Summary to print to the user
 
-"Fiber AI is installed. Try: 'search for Series B fintech in NYC', 'enrich this LinkedIn URL', or invoke a persona directly with `@ai-recruiter build me a pipeline of staff iOS engineers`, `@ai-sdr build an outbound list of VP Marketing at Series B SaaS`, `@gtm-strategist help me scope an ABM program for infra tools`, `@signal-scout give me job-change alerts for these 50 accounts`, or `@data-quality-auditor run a reproducible benchmark of Fiber vs PDL on my 200-row sample`. I will route those through the Fiber MCP and the matching skill. Docs: <https://api.fiber.ai/llms.txt>."
+"Fiber AI is installed. Try: 'search for Series B fintech in NYC', 'enrich this LinkedIn URL', or invoke a persona directly with `@ai-recruiter build me a pipeline of staff iOS engineers`, `@ai-sdr build an outbound list of VP Marketing at Series B SaaS`, `@gtm-strategist help me scope an ABM program for infra tools`, `@signal-scout give me job-change alerts for these 50 accounts`, `@data-quality-auditor run a reproducible benchmark of Fiber vs PDL on my 200-row sample`, `@product-engineer integrate Fiber enrichment into my signup flow`, or `@fiber-sde write a script that enriches this CSV with emails`. I will route those through the Fiber MCP and the matching skill. Docs: <https://api.fiber.ai/llms.txt>."

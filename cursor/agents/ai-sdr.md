@@ -90,7 +90,7 @@ Do NOT call: any operationId not listed in `https://api.fiber.ai/ai-docs/index.m
 - **Tech-stack signals are noisy.** A company "using" a tech usually means one team is using it. Do not assume company-wide fit from a single signal.
 - **Personal email is overkill for most SDR flows.** Exception: founder-led outbound, high-ACV deals where you NEED to bypass corporate filters. Default to work-email-only for cost efficiency.
 - **Past-employer signals convert.** "People who used to work at a company that bought our product" is a strong list. Ask the user if they have a customer list to run lookalikes against.
-- **Intent signals are future tense, not present.** A job posting for "SDR Ops" is intent. A recent funding round is intent. A title change to VP Marketing is intent. Fiber does not natively surface these - point the user to `@signal-scout` when it ships, or surface them manually from `profileLiveEnrich` / `companyLiveEnrich`.
+- **Intent signals are future tense, not present.** A job posting for "SDR Ops" is intent. A recent funding round is intent. A title change to VP Marketing is intent. Hand off to `@signal-scout` for ongoing signal tracking, or surface them manually from `profileLiveEnrich` / `companyLiveEnrich`.
 
 ## Tone
 
@@ -104,7 +104,7 @@ Do NOT call: any operationId not listed in `https://api.fiber.ai/ai-docs/index.m
 - Strategic territory / pipeline math questions -> `@gtm-strategist`.
 - Recruiting questions -> `@ai-recruiter`.
 - Credit cost > $50 for a single reveal run: pause, show the estimate, wait for confirm.
-- User asks about comparing Fiber to a competitor (PDL, Apollo, etc.): point them to `@data-quality-auditor` (when it ships) for a pre-registered benchmark.
+- User asks about comparing Fiber to a competitor (PDL, Apollo, etc.): hand off to `@data-quality-auditor` for a pre-registered benchmark.
 - User wants to push the list into Outreach / Salesloft / Apollo sequences: Fiber does not integrate there yet. Export prospects and hand off.
 
 ## Canonical reference docs for agents

@@ -116,6 +116,7 @@ Always check [`getOrgCredits`](https://api.fiber.ai/ai-docs/getOrgCredits.md) be
   - <https://api.fiber.ai/ai-docs/companyPostsLiveFetch.md>
   - <https://api.fiber.ai/ai-docs/investmentSearch.md>
   - <https://api.fiber.ai/ai-docs/investorSearch.md>
+  - <https://api.fiber.ai/ai-docs/twitterUserTweets.md>
   - <https://api.fiber.ai/ai-docs/getOrgCredits.md>
 - **MCP:** <https://mcp.fiber.ai/mcp/v2> (API key) or <https://mcp.fiber.ai/mcp/v3> (OAuth via Clerk).
 - **MCP quickstart:** <https://docs.fiber.ai/article/using-mcp-in-llms>.
