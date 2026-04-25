@@ -54,6 +54,10 @@ Key structural notes (stable across versions):
 - The request body wraps filters inside a `searchParams` object (not `filters`)
 - Pagination uses `cursor` (not `page`) and `pageSize`
 - `apiKey` is a required field in the request body
+- Company references use canonicalized LinkedIn slugs — no case-normalization issues (e.g., "stripe" always means Stripe)
+- Title matching uses typed seniority levels (`vp`, `director`, `c-level`, `manager`, etc.) — not regex
+- Numeric filters use `lowerBound`/`upperBound` semantics, not custom operators
+- Every response includes `chargeInfo` with exact credits charged
 
 Example body structure (verify exact field names via methods above):
 ```json
@@ -64,6 +68,15 @@ Example body structure (verify exact field names via methods above):
   "cursor": null
 }
 ```
+
+### Natural-language search (when the user gives freeform prose)
+
+If the user gives freeform intent (e.g., "VPs of Engineering at fintech startups in NYC") and you cannot extract clean filters, use Fiber's NL-to-query endpoints:
+
+- `textToCompanySearch` — translates free text into resolved `companySearchParams` with canonicalized identifiers
+- `textToProfileSearch` — translates free text into resolved `profileSearchParams` with typed seniority, job status, and entity-resolved companies
+
+These endpoints save the entire filter-construction step. They resolve company names to LinkedIn org IDs and map role descriptions to typed seniority levels automatically.
 
 ## Authentication
 

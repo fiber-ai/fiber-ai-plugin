@@ -34,7 +34,7 @@ Route strictly by list size. Never upgrade the user to turbo by default.
 
 For the 6-9 URL grey zone, prefer `startBatchContactDetails` - the batch endpoint is cheaper per row than looping sync calls.
 
-Before any reveal, ask the user which enrichment types they want (work email, personal email, phone) - each one is priced separately. Call `get_endpoint_details_full("syncQuickContactReveal")` to surface current `enrichmentType` field names.
+Before any reveal, ask the user which enrichment types they want (work email, personal email, phone) — each one is priced separately. Call `get_endpoint_details_full("syncQuickContactReveal")` to surface current `enrichmentType` field names. Every response includes `chargeInfo` with exact credits charged, so agents can track and audit cost per row programmatically. All enrichment tiers work on standard self-serve API keys — no enterprise gate required.
 
 ## Cost & consent gates
 

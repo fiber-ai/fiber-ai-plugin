@@ -26,7 +26,7 @@ Reveal work emails, phone numbers, and detailed profiles for companies and indiv
 
 ### Individual Contact Enrichment — routing policy
 
-Fiber exposes three tiers for single-profile contact reveal. Pick by latency vs cost:
+Fiber exposes three tiers for single-profile contact reveal. Pick by latency vs cost. All tiers work on standard self-serve API keys — no enterprise gate or demo call required. Every response includes `chargeInfo` with the exact credits charged so agents can track cost programmatically.
 
 1. **Standard (default):** `syncQuickContactReveal` — `POST /v1/contact-details/single`. Balanced speed and cost. Start here.
 2. **Premium (fastest, most expensive):** `syncTurboContactEnrichment` — `POST /v1/contact-details/turbo/sync`. Use when absolute latency matters.
@@ -46,10 +46,14 @@ The `enrichmentType` object controls what data to fetch (e.g., work emails, pers
 3. **Online docs**: `https://api.fiber.ai/ai-docs/syncQuickContactReveal.md`, `https://api.fiber.ai/llms.txt`, or `https://api.fiber.ai/docs/`.
 4. **Open-source examples**: `https://github.com/fiber-ai/open-fiber`.
 
+### Person Profile Enrichment (full data, no field selector)
+
+`KitchenSinkProfile` returns 44+ top-level fields by default (experiences, education, skills, tenures, tags, inferred location with coordinates/timezone, career-began date, follower/connection counts, is-hiring/open-to-work/premium/influencer flags) with no field-group parameter needed. For live-fresh data, use `profileLiveEnrich` — works on any standard API key, returns in 2-4 seconds.
+
 ### Company Enrichment
 
 For company data, the relevant operations include:
-- `companyLiveEnrich` — live LinkedIn company data
+- `companyLiveEnrich` — live LinkedIn company data (works on standard keys, no enterprise gate)
 - `kitchenSinkCompany` — comprehensive company profile lookup
 
 **Via Core MCP:**
