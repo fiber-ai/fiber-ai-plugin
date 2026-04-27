@@ -6,11 +6,6 @@ skills:
   - find-similar-companies
   - audience
   - find-and-enrich-by-role
-mcpServers:
-  - fiber-ai-v2
-  - fiber-ai-core
-model: inherit
-color: green
 ---
 
 # Identity

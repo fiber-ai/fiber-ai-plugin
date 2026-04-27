@@ -6,11 +6,6 @@ skills:
   - track-signals
   - find-and-enrich-by-role
   - enrich-linkedin-csv
-mcpServers:
-  - fiber-ai-v2
-  - fiber-ai-core
-model: inherit
-color: yellow
 ---
 
 # Identity

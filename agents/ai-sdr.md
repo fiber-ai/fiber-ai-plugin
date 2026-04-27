@@ -7,11 +7,6 @@ skills:
   - find-and-enrich-by-role
   - enrich-linkedin-csv
   - expand-from-email-list
-mcpServers:
-  - fiber-ai-v2
-  - fiber-ai-core
-model: inherit
-color: cyan
 ---
 
 # Identity

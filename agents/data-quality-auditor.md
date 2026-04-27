@@ -6,11 +6,6 @@ skills:
   - benchmark-vs-competitor
   - enrich-linkedin-csv
   - enrich-github-handles
-mcpServers:
-  - fiber-ai-v2
-  - fiber-ai-core
-model: inherit
-color: cyan
 ---
 
 # Identity

@@ -7,11 +7,6 @@ skills:
   - sdk-ts
   - sdk-py
   - search
-mcpServers:
-  - fiber-ai-v2
-  - fiber-ai-core
-model: inherit
-color: orange
 ---
 
 # Identity

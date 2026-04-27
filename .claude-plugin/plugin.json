@@ -21,7 +21,15 @@
   ],
   "logo": "assets/logo.png",
   "skills": "./skills/",
-  "agents": "./agents/",
   "mcpServers": "./.mcp.json",
-  "hooks": "./hooks/hooks.json"
+  "hooks": "./hooks/hooks.json",
+  "userConfig": {
+    "api_key": {
+      "type": "string",
+      "title": "Fiber AI API Key",
+      "description": "Your Fiber AI API key (get one at https://fiber.ai/app/api). Starts with sk_live_ or sk_test_.",
+      "sensitive": true,
+      "required": true
+    }
+  }
 }
