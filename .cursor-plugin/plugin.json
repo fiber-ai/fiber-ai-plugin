@@ -12,6 +12,7 @@
   "keywords": ["fiber", "b2b", "leads", "enrichment", "mcp", "sales", "contacts"],
   "logo": "assets/logo.png",
   "skills": "./skills/",
+  "agents": "./cursor/agents/",
   "rules": "./cursor/rules/",
   "commands": "./cursor/commands/",
   "mcpServers": "./.mcp.json",

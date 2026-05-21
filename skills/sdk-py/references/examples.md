@@ -44,21 +44,29 @@ result = people_search_sync(
 
 ## Contact Enrichment
 
-The primary endpoint is `syncContactEnrichment` at `/v1/contact-details/sync`:
+Fiber exposes three tiers for single-profile contact reveal:
+
+| operationId | Endpoint | When to use |
+| --- | --- | --- |
+| `syncQuickContactReveal` | `POST /v1/contact-details/single` | Default. Balanced speed and cost. |
+| `syncTurboContactEnrichment` | `POST /v1/contact-details/turbo/sync` | Fastest sync tier (premium cost). |
+| `triggerExhaustiveContactEnrichment` + `pollExhaustiveContactEnrichmentResult` | `POST /v1/contact-details/exhaustive/start` → `GET /v1/contact-details/exhaustive/poll` | Async waterfall for maximum coverage. Use as a fallback. |
+
+See <https://api.fiber.ai/ai-docs/syncQuickContactReveal.md> for the canonical schema.
 
 ```python
-from fiberai.api.contact_details.sync_contact_enrichment import (
-    sync as contact_enrich_sync,
+from fiberai.api.contact_details.sync_quick_contact_reveal import (
+    sync as quick_reveal_sync,
 )
-from fiberai.models.sync_contact_enrichment_body import SyncContactEnrichmentBody
+from fiberai.models.sync_quick_contact_reveal_body import SyncQuickContactRevealBody
 
-contact = contact_enrich_sync(
+contact = quick_reveal_sync(
     client=client,
-    body=SyncContactEnrichmentBody(
+    body=SyncQuickContactRevealBody(
         api_key=os.environ["FIBER_API_KEY"],
         linkedin_url="https://www.linkedin.com/in/example-profile",
         enrichment_type={
-            # Check https://api.fiber.ai/docs/ for current enrichment type options
+            # Check https://api.fiber.ai/ai-docs/syncQuickContactReveal.md for current options
             # Common fields: get_work_emails, get_personal_emails, get_phone_numbers
         },
     ),
@@ -106,38 +114,43 @@ async def main():
 aio.run(main())
 ```
 
-## Async Batch Enrichment
+## Batch Enrichment (10–2,000 identifiers)
+
+For larger sets of identifiers, prefer the dedicated batch endpoint over a loop of sync calls:
 
 ```python
 import asyncio as aio
 import os
 from fiberai import Client
-from fiberai.api.contact_details.sync_contact_enrichment import (
-    asyncio as contact_enrich_async,
+from fiberai.api.contact_details.start_batch_contact_details import (
+    asyncio as start_batch_async,
 )
-from fiberai.models.sync_contact_enrichment_body import SyncContactEnrichmentBody
+from fiberai.api.contact_details.poll_batch_contact_details import (
+    asyncio as poll_batch_async,
+)
+from fiberai.models.start_batch_contact_details_body import (
+    StartBatchContactDetailsBody,
+)
 
 client = Client(base_url="https://api.fiber.ai")
 api_key = os.environ["FIBER_API_KEY"]
 
 
-async def enrich_batch(linkedin_urls: list[str], delay: float = 0.2):
-    results = []
-    for url in linkedin_urls:
-        try:
-            result = await contact_enrich_async(
-                client=client,
-                body=SyncContactEnrichmentBody(
-                    api_key=api_key,
-                    linkedin_url=url,
-                    enrichment_type={},  # Specify types per https://api.fiber.ai/docs/
-                ),
-            )
-            results.append({"url": url, "data": result, "error": None})
-        except Exception as e:
-            results.append({"url": url, "data": None, "error": str(e)})
-        await aio.sleep(delay)  # Respect rate limits
-    return results
+async def enrich_batch(linkedin_urls: list[str]):
+    start = await start_batch_async(
+        client=client,
+        body=StartBatchContactDetailsBody(
+            api_key=api_key,
+            linkedin_urls=linkedin_urls,
+        ),
+    )
+    task_id: str = start.task_id
+
+    while True:
+        poll = await poll_batch_async(client=client, api_key=api_key, task_id=task_id)
+        if poll.status == "DONE":
+            return poll
+        await aio.sleep(30)  # 30s cadence — never tighter
 ```
 
 ## Important Notes

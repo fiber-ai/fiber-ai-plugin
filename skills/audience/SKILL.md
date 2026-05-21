@@ -122,6 +122,22 @@ Two separate export endpoints exist:
 - For GET endpoints: `apiKey` is in the **query string**
 - Check https://api.fiber.ai/docs/ for exact auth format per endpoint
 
+## For AI agents: machine-readable docs
+
+- **Start here:** <https://api.fiber.ai/llms.txt> — routing policy + critical rules (the canonical audience lifecycle is documented here).
+- **Operation index:** <https://api.fiber.ai/ai-docs/index.md> — every public operation, grouped by tag.
+- **Per-operation pages:** <https://api.fiber.ai/ai-docs/{operationId}.md>. Drop one of these straight into the LLM prompt instead of streaming the full OpenAPI spec. Audience lifecycle operations:
+  - <https://api.fiber.ai/ai-docs/createAudience.md>
+  - <https://api.fiber.ai/ai-docs/updateAudienceSearchParams.md>
+  - <https://api.fiber.ai/ai-docs/buildAudience.md>
+  - <https://api.fiber.ai/ai-docs/estimateEnrichmentCost.md>
+  - <https://api.fiber.ai/ai-docs/triggerEnrichment.md>
+  - <https://api.fiber.ai/ai-docs/getEnrichmentStatus.md>
+  - <https://api.fiber.ai/ai-docs/exportCompanies.md> / <https://api.fiber.ai/ai-docs/exportProspects.md>
+- **Content negotiation:** send `Accept: text/markdown` to <https://api.fiber.ai/openapi.json> to get the agent-friendly index at the same URL (Stripe pattern).
+- **MCP:** <https://mcp.fiber.ai/mcp/v2> (API key) or <https://mcp.fiber.ai/mcp/v3> (OAuth via Clerk).
+- **MCP quickstart:** <https://docs.fiber.ai/article/using-mcp-in-llms>.
+
 ## Error Handling
 
 - **Audience creation fails**: check API key and permissions via `/fiber:setup`

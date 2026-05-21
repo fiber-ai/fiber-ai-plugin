@@ -2,11 +2,21 @@
   "mcpServers": {
     "fiber-ai-v2": {
       "type": "http",
-      "url": "https://mcp.fiber.ai/mcp/v2"
+      "url": "https://mcp.fiber.ai/mcp/v2",
+      "headers": {
+        "x-api-key": "${user_config.api_key}"
+      }
+    },
+    "fiber-ai-v3": {
+      "type": "http",
+      "url": "https://mcp.fiber.ai/mcp/v3"
     },
     "fiber-ai-core": {
       "type": "http",
-      "url": "https://mcp.fiber.ai/mcp"
+      "url": "https://mcp.fiber.ai/mcp",
+      "headers": {
+        "x-api-key": "${user_config.api_key}"
+      }
     }
   }
 }

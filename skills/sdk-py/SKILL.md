@@ -51,6 +51,15 @@ result = company_search_sync(
 - Pagination uses `cursor` (not `page`)
 - The `Client` and `AuthenticatedClient` are the two exported client classes
 
+## Schema & Type Discovery
+
+Fiber's request/response schemas are large and evolve across versions. The SDK is the best source of truth:
+
+1. **From the installed package**: inspect `fiberai.models.<ModelName>` for every field. Use `help(fiberai.models.CompanySearchBody)` or IDE autocomplete to discover available fields for `search_params`, `enrichment_type`, etc. Model classes enforce correct field names at construction time.
+2. **From online docs**: per-operation pages at `https://api.fiber.ai/ai-docs/<operationId>.md` describe every field with examples. Start with `https://api.fiber.ai/llms.txt` for routing.
+3. **From MCP at runtime**: call `get_endpoint_details_full("<operationId>")` on the Core MCP to get the full current schema.
+4. **Open-source examples**: `https://github.com/fiber-ai/open-fiber` has working code samples.
+
 ## Async Support
 
 The same `Client` instance supports async via the `asyncio` function variant:
@@ -89,3 +98,13 @@ There is no separate `AsyncClient` class. Use the `asyncio` or `asyncio_detailed
 See the `references/` folder for:
 - Full client setup with error handling
 - Search, enrichment, and async patterns
+
+## For AI agents: machine-readable docs
+
+- **Start here:** <https://api.fiber.ai/llms.txt> — routing policy + critical rules (read before generating code).
+- **Operation index:** <https://api.fiber.ai/ai-docs/index.md> — every public operation, grouped by tag. Use it to discover the right `operationId` for a task.
+- **Per-operation pages:** <https://api.fiber.ai/ai-docs/{operationId}.md>. Drop this straight into an LLM prompt — it describes request/response shapes, credit costs, and routing hints for that one operation.
+- **Full corpus (RAG):** <https://api.fiber.ai/llms-full.txt> — every per-operation page concatenated for one-shot indexing.
+- **Content negotiation:** send `Accept: text/markdown` to <https://api.fiber.ai/openapi.json> to get the agent-friendly index at the same URL (Stripe pattern).
+- **MCP:** <https://mcp.fiber.ai/mcp/v2> (API key) or <https://mcp.fiber.ai/mcp/v3> (OAuth via Clerk).
+- **MCP quickstart:** <https://docs.fiber.ai/article/using-mcp-in-llms>.
