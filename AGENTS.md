@@ -15,7 +15,7 @@ This repository ships Fiber AI as a first-class plugin for AI coding agents (Cla
   - `https://mcp.fiber.ai/mcp` — 5 meta-tools (`search_endpoints`, `list_tag_packs`, `list_all_endpoints`, `get_endpoint_details_full`, `call_operation`) over every public operation, API-key auth (same shape as V2).
 - `.claude-plugin/`, `.cursor-plugin/` — manifest files for the Claude Code and Cursor plugin formats. Both register `agents/` alongside `skills/`.
 - `cursor/rules/`, `windsurf/rules/` — rule files surfaced to the agent inside those IDEs.
-- `hooks/` — Claude Code lifecycle hooks.
+- `hooks/` — Claude Code lifecycle hooks (`hooks/hooks.json`). Do **not** also set `"hooks"` in `.claude-plugin/plugin.json`; Claude Code auto-discovers `hooks/hooks.json` and a duplicate manifest entry loads hooks twice.
 - `.opencode/INSTALL.md` — fetch-and-follow install instructions for OpenCode.
 
 ## Canonical docs live on the API, not in this repo
