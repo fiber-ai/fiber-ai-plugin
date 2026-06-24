@@ -12,7 +12,7 @@ This repository ships Fiber AI as a first-class plugin for AI coding agents (Cla
 - `.mcp.json`, `cursor/mcp.json`, `vscode/mcp.json`, `gemini-extension.json` — MCP server configuration for each supported environment. All three Fiber MCP endpoints should appear in every config:
   - `https://mcp.fiber.ai/mcp/v2` — direct tools for the top ~10 priority operations, API-key auth.
   - `https://mcp.fiber.ai/mcp/v3` — direct tools for every public operation with compact descriptions, OAuth (SSO) auth.
-  - `https://mcp.fiber.ai/mcp` — 5 meta-tools (`search_endpoints`, `list_tag_packs`, `list_all_endpoints`, `get_endpoint_details_full`, `call_operation`) over every public operation, supports both API-key and OAuth.
+  - `https://mcp.fiber.ai/mcp` — 5 meta-tools (`search_endpoints`, `list_tag_packs`, `list_all_endpoints`, `get_endpoint_details_full`, `call_operation`) over every public operation, API-key auth (same shape as V2).
 - `.claude-plugin/`, `.cursor-plugin/` — manifest files for the Claude Code and Cursor plugin formats. Both register `agents/` alongside `skills/`.
 - `cursor/rules/`, `windsurf/rules/` — rule files surfaced to the agent inside those IDEs.
 - `hooks/` — Claude Code lifecycle hooks.
