@@ -11,7 +11,7 @@
     {
       "name": "fiber",
       "description": "B2B data enrichment — search companies, find contacts, enrich data, manage audiences",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "source": "./",
       "category": "data",
       "homepage": "https://fiber.ai",
