@@ -22,7 +22,6 @@
   "logo": "assets/logo.png",
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
-  "hooks": "./hooks/hooks.json",
   "userConfig": {
     "api_key": {
       "type": "string",

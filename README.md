@@ -8,7 +8,7 @@ Fiber MCP ships three HTTP endpoints:
 | --------- | ----------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | **V2**    | `https://mcp.fiber.ai/mcp/v2` | API key       | Auto-generated direct tools for the top ~10 priority operations                                                                     | Fastest path for common flows: search companies/people, enrich contacts  |
 | **V3**    | `https://mcp.fiber.ai/mcp/v3` | OAuth (SSO)   | Auto-generated direct tools for every public operation, with compact descriptions the model can expand on demand                    | Power users who want SSO login and full tool coverage without meta-tools |
-| **Core**  | `https://mcp.fiber.ai/mcp`    | API key or OAuth | 5 meta-tools: `search_endpoints`, `list_tag_packs`, `list_all_endpoints`, `get_endpoint_details_full`, `call_operation` over every public operation | Low-tool-count surface; agent discovers endpoints at runtime             |
+| **Core**  | `https://mcp.fiber.ai/mcp`    | API key       | 5 meta-tools: `search_endpoints`, `list_tag_packs`, `list_all_endpoints`, `get_endpoint_details_full`, `call_operation` over every public operation | Low-tool-count surface; agent discovers endpoints at runtime             |
 
 All three use **Streamable HTTP** transport. You can register any combination; the MCP server names stay distinct (`fiber-ai-v2`, `fiber-ai-v3`, `fiber-ai-core`).
 
@@ -165,7 +165,7 @@ Add the three MCP servers in Windsurf Settings (Transport: HTTP):
 
 - **V2** (API key): `https://mcp.fiber.ai/mcp/v2`
 - **V3** (OAuth): `https://mcp.fiber.ai/mcp/v3`
-- **Core** (API key or OAuth): `https://mcp.fiber.ai/mcp`
+- **Core** (API key): `https://mcp.fiber.ai/mcp`
 
 Copy `windsurf/rules/fiber-api.md` from this repo to your Windsurf rules directory.
 
@@ -283,7 +283,7 @@ Point your LLM / coding agent at these endpoints when building against Fiber:
 - **Per-operation pages:** `https://api.fiber.ai/ai-docs/<operationId>.md` (e.g. [`companySearch`](https://api.fiber.ai/ai-docs/companySearch.md), [`syncQuickContactReveal`](https://api.fiber.ai/ai-docs/syncQuickContactReveal.md), [`syncTurboContactEnrichment`](https://api.fiber.ai/ai-docs/syncTurboContactEnrichment.md), [`triggerExhaustiveContactEnrichment`](https://api.fiber.ai/ai-docs/triggerExhaustiveContactEnrichment.md))
 - **Full concatenated corpus (RAG):** <https://api.fiber.ai/llms-full.txt>
 - **OpenAPI (JSON):** <https://api.fiber.ai/openapi.json> — send `Accept: text/markdown` on the same URL for the agent-friendly markdown index
-- **MCP:** `https://mcp.fiber.ai/mcp/v2` (direct tools, API key) · `https://mcp.fiber.ai/mcp/v3` (direct tools over every public operation, OAuth / SSO) · `https://mcp.fiber.ai/mcp` (5 meta-tools, API key or OAuth)
+- **MCP:** `https://mcp.fiber.ai/mcp/v2` (direct tools, API key) · `https://mcp.fiber.ai/mcp/v3` (direct tools over every public operation, OAuth / SSO) · `https://mcp.fiber.ai/mcp` (5 meta-tools, API key)
 - **MCP quickstart:** <https://docs.fiber.ai/article/using-mcp-in-llms>
 
 Authoring rules for anyone extending this plugin: see [`AGENTS.md`](./AGENTS.md).
