@@ -1,16 +1,25 @@
 {
-  "mcpServers": {
+  "servers": {
     "fiber-ai-v2": {
       "type": "http",
-      "url": "https://mcp.fiber.ai/mcp/v2"
+      "url": "https://mcp.fiber.ai/mcp/v2",
+      "headers": {
+        "x-client-name": "fiber-ai-plugin/1.0.1"
+      }
     },
     "fiber-ai-v3": {
       "type": "http",
-      "url": "https://mcp.fiber.ai/mcp/v3"
+      "url": "https://mcp.fiber.ai/mcp/v3",
+      "headers": {
+        "x-client-name": "fiber-ai-plugin/1.0.1"
+      }
     },
     "fiber-ai-core": {
       "type": "http",
-      "url": "https://mcp.fiber.ai/mcp"
+      "url": "https://mcp.fiber.ai/mcp",
+      "headers": {
+        "x-client-name": "fiber-ai-plugin/1.0.1"
+      }
     }
   }
 }

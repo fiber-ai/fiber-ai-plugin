@@ -46,19 +46,19 @@ Team sharing (optional) — commit a `.mcp.json` at the project root so teammate
 V2 (recommended for most users, API key auth):
 
 ```
-cursor://anysphere.cursor-deeplink/mcp/install?name=fiber-ai-v2&config=eyJ0eXBlIjoiaHR0cCIsInVybCI6Imh0dHBzOi8vbWNwLmZpYmVyLmFpL21jcC92MiJ9
+cursor://anysphere.cursor-deeplink/mcp/install?name=fiber-ai-v2&config=eyJ0eXBlIjoiaHR0cCIsInVybCI6Imh0dHBzOi8vbWNwLmZpYmVyLmFpL21jcC92MiIsImhlYWRlcnMiOnsieC1jbGllbnQtbmFtZSI6ImZpYmVyLWFpLXBsdWdpbi8xLjAuMSJ9fQ==
 ```
 
 V3 (every public operation, OAuth / SSO auth):
 
 ```
-cursor://anysphere.cursor-deeplink/mcp/install?name=fiber-ai-v3&config=eyJ0eXBlIjoiaHR0cCIsInVybCI6Imh0dHBzOi8vbWNwLmZpYmVyLmFpL21jcC92MyJ9
+cursor://anysphere.cursor-deeplink/mcp/install?name=fiber-ai-v3&config=eyJ0eXBlIjoiaHR0cCIsInVybCI6Imh0dHBzOi8vbWNwLmZpYmVyLmFpL21jcC92MyIsImhlYWRlcnMiOnsieC1jbGllbnQtbmFtZSI6ImZpYmVyLWFpLXBsdWdpbi8xLjAuMSJ9fQ==
 ```
 
 Core (5 meta-tools over every public operation):
 
 ```
-cursor://anysphere.cursor-deeplink/mcp/install?name=fiber-ai-core&config=eyJ0eXBlIjoiaHR0cCIsInVybCI6Imh0dHBzOi8vbWNwLmZpYmVyLmFpL21jcCJ9
+cursor://anysphere.cursor-deeplink/mcp/install?name=fiber-ai-core&config=eyJ0eXBlIjoiaHR0cCIsInVybCI6Imh0dHBzOi8vbWNwLmZpYmVyLmFpL21jcCIsImhlYWRlcnMiOnsieC1jbGllbnQtbmFtZSI6ImZpYmVyLWFpLXBsdWdpbi8xLjAuMSJ9fQ==
 ```
 
 **Option B — Manual:** copy `cursor/mcp.json` from this repo to your project's `.cursor/mcp.json`. Optionally copy `cursor/rules/fiber-api.mdc` to `.cursor/rules/` for inline agent guidance.
@@ -101,14 +101,17 @@ Codex CLI reads MCP servers from `~/.codex/config.toml`. Append:
 [mcp_servers.fiber-ai-v2]
 url = "https://mcp.fiber.ai/mcp/v2"
 transport = "http"
+http_headers = { "x-client-name" = "fiber-ai-plugin/1.0.1" }
 
 [mcp_servers.fiber-ai-v3]
 url = "https://mcp.fiber.ai/mcp/v3"
 transport = "http"
+http_headers = { "x-client-name" = "fiber-ai-plugin/1.0.1" }
 
 [mcp_servers.fiber-ai-core]
 url = "https://mcp.fiber.ai/mcp"
 transport = "http"
+http_headers = { "x-client-name" = "fiber-ai-plugin/1.0.1" }
 ```
 
 Then export your API key (V2 and Core support API-key auth; V3 uses OAuth SSO instead):
@@ -145,14 +148,14 @@ Copilot CLI picks up `AGENTS.md` automatically — clone or symlink this repo in
 
 ### VS Code
 
-Add to your `.vscode/mcp.json`:
+Copy `vscode/mcp.json` from this repo to your workspace's `.vscode/mcp.json`. VS Code reads servers from the top-level `servers` key:
 
 ```json
 {
-  "mcpServers": {
-    "fiber-ai-v2": { "type": "http", "url": "https://mcp.fiber.ai/mcp/v2" },
-    "fiber-ai-v3": { "type": "http", "url": "https://mcp.fiber.ai/mcp/v3" },
-    "fiber-ai-core": { "type": "http", "url": "https://mcp.fiber.ai/mcp" }
+  "servers": {
+    "fiber-ai-v2": { "type": "http", "url": "https://mcp.fiber.ai/mcp/v2", "headers": { "x-client-name": "fiber-ai-plugin/1.0.1" } },
+    "fiber-ai-v3": { "type": "http", "url": "https://mcp.fiber.ai/mcp/v3", "headers": { "x-client-name": "fiber-ai-plugin/1.0.1" } },
+    "fiber-ai-core": { "type": "http", "url": "https://mcp.fiber.ai/mcp", "headers": { "x-client-name": "fiber-ai-plugin/1.0.1" } }
   }
 }
 ```
