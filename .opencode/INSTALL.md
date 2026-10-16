@@ -34,20 +34,25 @@ Add the following entries to the chosen config file's `mcp` object. V3 uses OAut
       "type": "remote",
       "url": "https://mcp.fiber.ai/mcp/v2",
       "headers": {
-        "x-api-key": "{env:FIBER_API_KEY}"
+        "x-api-key": "{env:FIBER_API_KEY}",
+        "x-client-name": "fiber-ai-plugin/1.0.1"
       },
       "enabled": true
     },
     "fiber-ai-v3": {
       "type": "remote",
       "url": "https://mcp.fiber.ai/mcp/v3",
+      "headers": {
+        "x-client-name": "fiber-ai-plugin/1.0.1"
+      },
       "enabled": true
     },
     "fiber-ai-core": {
       "type": "remote",
       "url": "https://mcp.fiber.ai/mcp",
       "headers": {
-        "x-api-key": "{env:FIBER_API_KEY}"
+        "x-api-key": "{env:FIBER_API_KEY}",
+        "x-client-name": "fiber-ai-plugin/1.0.1"
       },
       "enabled": true
     }

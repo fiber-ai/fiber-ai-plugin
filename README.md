@@ -101,14 +101,17 @@ Codex CLI reads MCP servers from `~/.codex/config.toml`. Append:
 [mcp_servers.fiber-ai-v2]
 url = "https://mcp.fiber.ai/mcp/v2"
 transport = "http"
+http_headers = { "x-client-name" = "fiber-ai-plugin/1.0.1" }
 
 [mcp_servers.fiber-ai-v3]
 url = "https://mcp.fiber.ai/mcp/v3"
 transport = "http"
+http_headers = { "x-client-name" = "fiber-ai-plugin/1.0.1" }
 
 [mcp_servers.fiber-ai-core]
 url = "https://mcp.fiber.ai/mcp"
 transport = "http"
+http_headers = { "x-client-name" = "fiber-ai-plugin/1.0.1" }
 ```
 
 Then export your API key (V2 and Core support API-key auth; V3 uses OAuth SSO instead):
