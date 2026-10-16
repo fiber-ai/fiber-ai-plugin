@@ -21,6 +21,15 @@
   ],
   "logo": "assets/logo.png",
   "skills": "./skills/",
+  "agents": [
+    "./claude/agents/ai-recruiter.md",
+    "./claude/agents/ai-sdr.md",
+    "./claude/agents/data-quality-auditor.md",
+    "./claude/agents/fiber-sde.md",
+    "./claude/agents/gtm-strategist.md",
+    "./claude/agents/product-engineer.md",
+    "./claude/agents/signal-scout.md"
+  ],
   "mcpServers": "./.mcp.json",
   "userConfig": {
     "api_key": {

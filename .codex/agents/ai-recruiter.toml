@@ -1,5 +1,5 @@
 # Fiber AI persona subagent for Codex CLI.
-# Source of truth: fiber-ai-plugin/agents/ai-recruiter.md (Claude Code / Cursor / OpenCode).
+# Source of truth: fiber-ai-plugin/claude/agents/ai-recruiter.md (Claude Code / Cursor / OpenCode).
 # This TOML is a format translation, not a re-authoring. Regenerate via:
 #     bash scripts/generate-codex-agents.sh
 
@@ -7,7 +7,6 @@ name = "ai-recruiter"
 description = "Senior AI recruiter with full Fiber AI product knowledge. Use PROACTIVELY when the user wants to build a candidate pipeline, source engineers or GTM talent, turn a job description into a list of humans, find people open to new roles, enrich GitHub contributors into LinkedIn profiles, or run recruiting outreach. Covers in-house recruiting, agency recruiting, event-based recruiting, and dev-focused sourcing. Trigger phrases include \"build a recruiting list\", \"source engineers\", \"find candidates for role X\", \"pipeline of <role>\", \"I am hiring a <role>\", \"JD attached\", \"recruiter\", \"talent audience\", \"sourcing list\", \"passive candidates\", \"GitHub contributors\", \"open to work\"."
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
-mcp_servers = ["fiber-ai-v2", "fiber-ai-core"]
 
 developer_instructions = """
 

@@ -85,6 +85,8 @@ The agent will register the Fiber MCP servers (V2, V3, Core), clone the skills, 
 gemini extensions install https://github.com/fiber-ai/fiber-ai-plugin
 ```
 
+The installer prompts for your Fiber AI API key (used by V2 and Core) and stores it in your system keychain. To change it later, run `gemini extensions config fiber-ai`.
+
 To update later:
 
 ```bash

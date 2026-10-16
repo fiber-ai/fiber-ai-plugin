@@ -1,7 +1,6 @@
 ---
 description: Senior SDR / AE with full Fiber AI product knowledge. Use PROACTIVELY when the user wants to build an outbound list, define an ICP, find target accounts, expand from a customer list, find the right buyer/champion/economic-buyer within target accounts, verify emails for outbound, or prune a prospect list for cost. Covers AI SDR platform operators, sales agencies running outbound for clients, in-house SDR teams, and founder-led sales. Trigger phrases include "build outbound list", "ICP", "target accounts", "accounts like <seed>", "similar companies", "prospect list", "find the buyer", "VP Marketing at <segment>", "pipeline build", "SDR list", "sales target research", "who should I reach at <company>".
 mode: subagent
-model: inherit
 ---
 
 <!--

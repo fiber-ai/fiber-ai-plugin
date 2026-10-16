@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
-# Regenerates .codex/agents/*.toml from the canonical agents/*.md files.
+# Regenerates .codex/agents/*.toml from the canonical claude/agents/*.md files.
 #
-# The canonical source for every persona is agents/<name>.md (Claude Code /
+# The canonical source for every persona is claude/agents/<name>.md (Claude Code /
 # Cursor format). This script translates each of those to the TOML schema
 # Codex CLI expects:
 #     name = "<agent>"
 #     description = "<single-line description>"
 #     model_reasoning_effort = "medium" | "high"
 #     sandbox_mode = "workspace-write"
-#     mcp_servers = ["fiber-ai-v2", "fiber-ai-core"]
 #     developer_instructions = """<markdown body>"""
+#
+# Do not add `mcp_servers` here: in a Codex agent file it is a map of server
+# definitions, so a list of names makes the whole file invalid. The Fiber MCP
+# servers from ~/.codex/config.toml are inherited by the agent.
 #
 # Run from the plugin root: bash scripts/generate-codex-agents.sh
 
@@ -20,7 +23,7 @@ cd "$here"
 
 mkdir -p .codex/agents
 
-for src in agents/*.md; do
+for src in claude/agents/*.md; do
   agent="$(basename "$src" .md)"
   desc=$(awk '/^description: /{ sub(/^description: /, ""); print; exit }' "$src")
 
@@ -44,7 +47,7 @@ for src in agents/*.md; do
   out=".codex/agents/${agent}.toml"
   {
     echo "# Fiber AI persona subagent for Codex CLI."
-    echo "# Source of truth: fiber-ai-plugin/agents/${agent}.md (Claude Code / Cursor / OpenCode)."
+    echo "# Source of truth: fiber-ai-plugin/claude/agents/${agent}.md (Claude Code / Cursor / OpenCode)."
     echo "# This TOML is a format translation, not a re-authoring. Regenerate via:"
     echo "#     bash scripts/generate-codex-agents.sh"
     echo
@@ -52,7 +55,6 @@ for src in agents/*.md; do
     echo "description = \"${desc_escaped}\""
     echo "model_reasoning_effort = \"${effort}\""
     echo "sandbox_mode = \"workspace-write\""
-    echo "mcp_servers = [\"fiber-ai-v2\", \"fiber-ai-core\"]"
     echo
     echo "developer_instructions = \"\"\""
     cat "$body_tmp"

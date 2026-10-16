@@ -1,7 +1,6 @@
 ---
 description: Product engineer specializing in real-time enrichment integrations using Fiber AI. Use PROACTIVELY when the user wants to enrich user profiles on signup, fill in company metadata from a domain, build a profile completion flow, power a job board with enriched data, resolve identities at API level, or integrate Fiber into a product backend. Covers website enrichment, signup flows, profile completion, CRM sync, and developer-facing integration patterns. Trigger phrases include "enrich on signup", "fill in user profiles", "real-time enrichment", "integrate Fiber into my app", "company logo from domain", "profile completion", "identity resolution API", "enrich in my backend", "webhook enrichment", "product integration", "job board enrichment", "user onboarding enrichment".
 mode: subagent
-model: inherit
 ---
 
 <!--
