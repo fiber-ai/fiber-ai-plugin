@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Regenerates .codex/agents/*.toml from the canonical agents/*.md files.
 #
-# The canonical source for every persona is agents/<name>.md (Claude Code /
+# The canonical source for every persona is claude/agents/<name>.md (Claude Code /
 # Cursor format). This script translates each of those to the TOML schema
 # Codex CLI expects:
 #     name = "<agent>"
@@ -20,7 +20,7 @@ cd "$here"
 
 mkdir -p .codex/agents
 
-for src in agents/*.md; do
+for src in claude/agents/*.md; do
   agent="$(basename "$src" .md)"
   desc=$(awk '/^description: /{ sub(/^description: /, ""); print; exit }' "$src")
 
@@ -44,7 +44,7 @@ for src in agents/*.md; do
   out=".codex/agents/${agent}.toml"
   {
     echo "# Fiber AI persona subagent for Codex CLI."
-    echo "# Source of truth: fiber-ai-plugin/agents/${agent}.md (Claude Code / Cursor / OpenCode)."
+    echo "# Source of truth: fiber-ai-plugin/claude/agents/${agent}.md (Claude Code / Cursor / OpenCode)."
     echo "# This TOML is a format translation, not a re-authoring. Regenerate via:"
     echo "#     bash scripts/generate-codex-agents.sh"
     echo

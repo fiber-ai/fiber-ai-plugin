@@ -1,5 +1,5 @@
 # Fiber AI persona subagent for Codex CLI.
-# Source of truth: fiber-ai-plugin/agents/fiber-sde.md (Claude Code / Cursor / OpenCode).
+# Source of truth: fiber-ai-plugin/claude/agents/fiber-sde.md (Claude Code / Cursor / OpenCode).
 # This TOML is a format translation, not a re-authoring. Regenerate via:
 #     bash scripts/generate-codex-agents.sh
 

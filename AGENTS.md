@@ -5,15 +5,15 @@ This repository ships Fiber AI as a first-class plugin for AI coding agents (Cla
 ## What this repo contains
 
 - `skills/` — per-workflow skills (Markdown). Each skill has a `SKILL.md` with YAML frontmatter (`name`, `description`, `user-invocable`, `argument-hint`). The `description` is what other agents match against to auto-load the skill, so it must contain realistic user trigger phrases.
-- `agents/` — persona subagent files (Claude Code / Cursor / OpenCode compatible). Flat `.md` files; each is a full subagent system prompt with YAML frontmatter. See "Persona authoring rules" below. Current personas: `ai-recruiter`, `ai-sdr`, `gtm-strategist`, `signal-scout`, `data-quality-auditor`, `product-engineer`, `fiber-sde`.
-- `cursor/agents/` — Cursor-compatible copies of the persona files (plain `cp` from `agents/`).
+- `claude/agents/` — persona subagent files (Claude Code format, canonical source). Flat `.md` files; each is a full subagent system prompt with YAML frontmatter. See "Persona authoring rules" below. Current personas: `ai-recruiter`, `ai-sdr`, `gtm-strategist`, `signal-scout`, `data-quality-auditor`, `product-engineer`, `fiber-sde`. Do **not** move them back to a root `agents/` directory: Gemini CLI auto-loads `agents/` from the extension root and rejects the Claude Code frontmatter (`tools` string, `skills`).
+- `cursor/agents/` — Cursor-compatible copies of the persona files (plain `cp` from `claude/agents/`).
 - `.opencode/agents/` — OpenCode-compatible copies of the persona files (`cp` + frontmatter swap: `name`/`tools`/`skills`/`mcpServers`/`color` removed, `mode: subagent` added).
-- `.codex/agents/` — Codex CLI TOML translations of the persona files. Generated from `agents/*.md` via a small bash script; the developer instructions body is copied verbatim, not re-authored.
+- `.codex/agents/` — Codex CLI TOML translations of the persona files. Generated from `claude/agents/*.md` via a small bash script; the developer instructions body is copied verbatim, not re-authored.
 - `.mcp.json`, `cursor/mcp.json`, `vscode/mcp.json`, `gemini-extension.json` — MCP server configuration for each supported environment. All three Fiber MCP endpoints should appear in every config:
   - `https://mcp.fiber.ai/mcp/v2` — direct tools for the top ~10 priority operations, API-key auth.
   - `https://mcp.fiber.ai/mcp/v3` — direct tools for every public operation with compact descriptions, OAuth (SSO) auth.
   - `https://mcp.fiber.ai/mcp` — 5 meta-tools (`search_endpoints`, `list_tag_packs`, `list_all_endpoints`, `get_endpoint_details_full`, `call_operation`) over every public operation, API-key auth (same shape as V2).
-- `.claude-plugin/`, `.cursor-plugin/` — manifest files for the Claude Code and Cursor plugin formats. Both register `agents/` alongside `skills/`.
+- `.claude-plugin/`, `.cursor-plugin/` — manifest files for the Claude Code and Cursor plugin formats. They register `claude/agents/` and `cursor/agents/` respectively, alongside `skills/`.
 - `cursor/rules/`, `windsurf/rules/` — rule files surfaced to the agent inside those IDEs.
 - `hooks/` — Claude Code lifecycle hooks (`hooks/hooks.json`). Do **not** also set `"hooks"` in `.claude-plugin/plugin.json`; Claude Code auto-discovers `hooks/hooks.json` and a duplicate manifest entry loads hooks twice.
 - `.opencode/INSTALL.md` — fetch-and-follow install instructions for OpenCode.
@@ -39,9 +39,9 @@ When a skill references an operation, link to `https://api.fiber.ai/ai-docs/<ope
 
 ## Persona authoring rules
 
-Personas live in `agents/<name>.md` (canonical source). A persona is a domain-expert subagent that the user can invoke with `@<name>` and that carries full Fiber product knowledge plus operator-grade domain expertise.
+Personas live in `claude/agents/<name>.md` (canonical source). A persona is a domain-expert subagent that the user can invoke with `@<name>` and that carries full Fiber product knowledge plus operator-grade domain expertise.
 
-- **Canonical source is `agents/<name>.md`.** Cursor and OpenCode copies are `cp`-derived; Codex TOML is script-derived. Never edit a derived copy directly - edit `agents/<name>.md` and re-run the distribution steps (see below).
+- **Canonical source is `claude/agents/<name>.md`.** Cursor and OpenCode copies are `cp`-derived; Codex TOML is script-derived. Never edit a derived copy directly - edit `claude/agents/<name>.md` and re-run the distribution steps (see below).
 - **Frontmatter fields (Claude Code plugin):** `name` (matches filename), `description` (trigger phrases + "Use PROACTIVELY when ..."), `tools`, `skills` (preload list). Note: `mcpServers`, `color`, `model`, and `permissionMode` are NOT supported for plugin-shipped agents per the Claude Code plugin spec -- MCP servers from `.mcp.json` are available globally.
 - **Frontmatter fields (Cursor variant):** same as Claude Code plus `mcpServers`, `model: inherit`, `color` (Cursor supports these fields).
 - **Frontmatter fields (OpenCode variant):** `description`, `mode: subagent`, `model: inherit`. Everything else lives in the HTML comment block at the top of the body.
@@ -53,14 +53,17 @@ Personas live in `agents/<name>.md` (canonical source). A persona is a domain-ex
 
 ### Distributing a new or renamed persona
 
-After editing or adding `agents/<name>.md`:
+After editing or adding `claude/agents/<name>.md`:
 
 ```bash
+# Claude Code: a new persona must also be listed in the "agents" array of
+# .claude-plugin/plugin.json (Claude Code rejects a directory path there).
+
 # Cursor (identical frontmatter works for Cursor):
-cp agents/<name>.md cursor/agents/<name>.md
+cp claude/agents/<name>.md cursor/agents/<name>.md
 
 # OpenCode (swap frontmatter to `mode: subagent`):
-cp agents/<name>.md .opencode/agents/<name>.md
+cp claude/agents/<name>.md .opencode/agents/<name>.md
 # ...then edit the frontmatter block: remove name/tools/skills/mcpServers/color,
 # add `mode: subagent`, and move the dropped fields into the HTML comment at top of body.
 
