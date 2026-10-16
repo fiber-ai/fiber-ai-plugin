@@ -1,7 +1,6 @@
 ---
 description: Intent-signal operator with full Fiber AI product knowledge. Use PROACTIVELY when the user wants ongoing alerts on a seed list - job changes, hiring signals, social activity, recent funding - rather than a one-shot enrichment. Covers in-house GTM teams running signal-driven outbound, recruiters watching passive candidates, and product/customer-success teams tracking account health. Trigger phrases include "track signals", "watch these accounts", "job-change alerts", "alert me when X changes jobs", "signal-driven outbound", "monitor my ABM list", "who is hiring at my targets", "recent funding at my accounts", "intent data".
 mode: subagent
-model: inherit
 ---
 
 <!--

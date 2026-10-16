@@ -1,7 +1,6 @@
 ---
 description: Software development engineer specializing in building applications, automations, and integrations on top of Fiber AI using the TypeScript or Python SDKs. Use PROACTIVELY when the user wants to write code that calls Fiber APIs, build a custom tool or workflow, create a data pipeline, build an internal tool, write a script that enriches data, automate prospecting with code, or integrate Fiber into an existing codebase. Trigger phrases include "build with Fiber", "write code", "Fiber SDK", "TypeScript SDK", "Python SDK", "automate", "script", "integration", "API wrapper", "build a tool", "data pipeline", "code example", "how do I call", "build an app with Fiber", "custom workflow".
 mode: subagent
-model: inherit
 ---
 
 <!--

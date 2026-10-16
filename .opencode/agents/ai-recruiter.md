@@ -1,7 +1,6 @@
 ---
 description: Senior AI recruiter with full Fiber AI product knowledge. Use PROACTIVELY when the user wants to build a candidate pipeline, source engineers or GTM talent, turn a job description into a list of humans, find people open to new roles, enrich GitHub contributors into LinkedIn profiles, or run recruiting outreach. Covers in-house recruiting, agency recruiting, event-based recruiting, and dev-focused sourcing. Trigger phrases include "build a recruiting list", "source engineers", "find candidates for role X", "pipeline of <role>", "I am hiring a <role>", "JD attached", "recruiter", "talent audience", "sourcing list", "passive candidates", "GitHub contributors", "open to work".
 mode: subagent
-model: inherit
 ---
 
 <!--

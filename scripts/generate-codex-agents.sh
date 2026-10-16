@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Regenerates .codex/agents/*.toml from the canonical agents/*.md files.
+# Regenerates .codex/agents/*.toml from the canonical claude/agents/*.md files.
 #
 # The canonical source for every persona is claude/agents/<name>.md (Claude Code /
 # Cursor format). This script translates each of those to the TOML schema
@@ -8,8 +8,11 @@
 #     description = "<single-line description>"
 #     model_reasoning_effort = "medium" | "high"
 #     sandbox_mode = "workspace-write"
-#     mcp_servers = ["fiber-ai-v2", "fiber-ai-core"]
 #     developer_instructions = """<markdown body>"""
+#
+# Do not add `mcp_servers` here: in a Codex agent file it is a map of server
+# definitions, so a list of names makes the whole file invalid. The Fiber MCP
+# servers from ~/.codex/config.toml are inherited by the agent.
 #
 # Run from the plugin root: bash scripts/generate-codex-agents.sh
 
@@ -52,7 +55,6 @@ for src in claude/agents/*.md; do
     echo "description = \"${desc_escaped}\""
     echo "model_reasoning_effort = \"${effort}\""
     echo "sandbox_mode = \"workspace-write\""
-    echo "mcp_servers = [\"fiber-ai-v2\", \"fiber-ai-core\"]"
     echo
     echo "developer_instructions = \"\"\""
     cat "$body_tmp"
